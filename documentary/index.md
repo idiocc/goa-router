@@ -1,11 +1,11 @@
-# my-new-package
+# @goa/router
 
-%NPM: my-new-package%
+%NPM: @goa/router%
 
-`my-new-package` is {{ description }}
+`@goa/router` is The Router For Creating Middleware For Goa Apps.
 
 ```sh
-yarn add my-new-package
+yarn add @goa/router
 ```
 
 ## Table Of Contents

@@ -3,16 +3,16 @@
 The package is available by importing its default function:
 
 ```js
-import myNewPackage from 'my-new-package'
+import router from '@goa/router'
 ```
 
 %~%
 
-<typedef method="myNewPackage">types/api.xml</typedef>
+<typedef method="router">types/api.xml</typedef>
 
 <typedef>types/index.xml</typedef>
 
-%EXAMPLE: example, ../src => my-new-package%
+%EXAMPLE: example, ../src => @goa/router%
 %FORK example%
 
 %~%

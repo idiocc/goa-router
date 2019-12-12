@@ -1,19 +1,19 @@
 import { equal, ok } from '@zoroaster/assert'
 import Context from '../context'
-import myNewPackage from '../../src'
+import router from '../../src'
 
 /** @type {Object.<string, (c: Context)>} */
 const T = {
   context: Context,
   'is a function'() {
-    equal(typeof myNewPackage, 'function')
+    equal(typeof router, 'function')
   },
   async 'calls package without error'() {
-    await myNewPackage()
+    await router()
   },
   async 'gets a link to the fixture'({ fixture }) {
     const text = fixture`text.txt`
-    const res = await myNewPackage({
+    const res = await router({
       text,
     })
     ok(res, text)

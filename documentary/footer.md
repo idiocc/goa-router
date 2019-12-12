@@ -4,7 +4,7 @@
 
 ## Copyright & License
 
-{{ license_name }}
+GNU Affero General Public License v3.0
 
 <footer />
 

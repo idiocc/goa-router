@@ -1,21 +1,21 @@
 import { c } from 'erte'
 
 /**
- * {{ description }}
- * @param {!_myNewPackage.Config} [config] Options for the program.
+ * The Router For Creating Middleware For Goa Apps.
+ * @param {!_router.Config} [config] Options for the program.
  * @param {boolean} [config.shouldRun=true] A boolean option. Default `true`.
  * @param {string} [config.text] A text to return.
  */
-export default async function myNewPackage(config = {}) {
+export default async function router(config = {}) {
   const {
     shouldRun = true,
     text = '',
   } = config
   if (!shouldRun) return
-  console.log('my-new-package called with %s', c(text, 'yellow'))
+  console.log('@goa/router called with %s', c(text, 'yellow'))
   return text
 }
 
 /**
- * @typedef {import('../types').Config} _myNewPackage.Config
+ * @typedef {import('..').Config} _router.Config
  */

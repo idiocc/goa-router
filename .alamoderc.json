@@ -1,28 +1,11 @@
 {
   "env": {
-    "test-build": {
-      "import": {
-        "replacement": {
-          "from": "^((../)+)src",
-          "to": "$1build"
-        }
-      }
-    },
     "test-compile": {
       "import": {
         "replacement": {
           "from": "^((../)+)src$",
           "to": "$1compile"
         }
-      }
-    },
-    "build": {
-      "import": {
-        "stdlib": {
-          "path": "stdlib",
-          "packages": ["argufy", "indicatrix", "usually", "erte"]
-        },
-        "alamodeModules": ["argufy", "indicatrix", "usually", "erte"]
       }
     }
   }

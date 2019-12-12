@@ -1,22 +1,22 @@
-const { _myNewPackage } = require('./mnp')
+const { _router } = require('./router')
 
 /**
- * {{ description }}
- * @param {!_myNewPackage.Config} config Options for the program.
+ * The Router For Creating Middleware For Goa Apps.
+ * @param {!_router.Config} config Options for the program.
  * @param {boolean} [config.shouldRun=true] A boolean option. Default `true`.
  * @param {string} [config.text] A text to return.
  * @return {Promise<string>}
  */
-function myNewPackage(config) {
-  return _myNewPackage(config)
+function router(config) {
+  return _router(config)
 }
 
-module.exports = myNewPackage
+module.exports = router
 
 /* typal types/index.xml namespace */
 /**
- * @typedef {_myNewPackage.Config} Config `＠record` Options for the program.
- * @typedef {Object} _myNewPackage.Config `＠record` Options for the program.
+ * @typedef {_router.Config} Config `＠record` Options for the program.
+ * @typedef {Object} _router.Config `＠record` Options for the program.
  * @prop {boolean} [shouldRun=true] A boolean option. Default `true`.
  * @prop {string} [text] A text to return.
  */

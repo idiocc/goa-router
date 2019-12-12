@@ -1,12 +1,12 @@
-const { _myNewPackage } = require('./mnp')
+const { _router } = require('./router')
 
 /**
- * @methodType {_myNewPackage.myNewPackage}
+ * @methodType {_router.router}
  */
-function myNewPackage(config) {
-  return _myNewPackage(config)
+function router(config) {
+  return _router(config)
 }
 
-module.exports = myNewPackage
+module.exports = router
 
 /* typal types/index.xml namespace */
