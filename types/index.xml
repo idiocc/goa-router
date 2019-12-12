@@ -1,0 +1,10 @@
+<types namespace="_myNewPackage">
+  <type record name="Config" desc="Options for the program.">
+    <prop boolean name="shouldRun" default="true">
+      A boolean option.
+    </prop>
+    <prop string name="text" opt>
+      A text to return.
+    </prop>
+  </type>
+</types>

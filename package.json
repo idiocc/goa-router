@@ -1,0 +1,66 @@
+{
+  "name": "my-new-package",
+  "version": "0.0.0-pre",
+  "description": "{{ description }}",
+  "main": "compile/index.js",
+  "module": "src/index.js",
+  "scripts": {
+    "t": "zoroaster -a",
+    "test": "yarn t test/spec test/mask",
+    "spec": "yarn t test/spec",
+    "mask": "yarn t test/mask",
+    "dev": "node src/bin",
+    "compile": "depack src/bin/mnp -o compile/bin/mnp.js -a -c -S --externs types/externs.js",
+    "lib": "depack src/depack.js -o compile/mnp.js -a -c --source_map_include_content",
+    "stdlib": "depack src/stdlib.js -o stdlib/index.js -a -c -p --source_map_include_content",
+    "test-build": "ALAMODE_ENV=test-build yarn test",
+    "test-compile": "ALAMODE_ENV=test-compile yarn test",
+    "lint": "eslint .",
+    "doc": "NODE_DEBUG=doc doc -o README.md -n _myNewPackage",
+    "wiki": "NODE_DEBUG=doc doc documentary-wiki -W wiki -n _myNewPackage",
+    "b": "ALAMODE_ENV=build alamode src -o build -i stdlib.js -s",
+    "d": "yarn-s template d1 externs",
+    "d1": "typal compile/index.js -u -t types/index.xml",
+    "d2": "typal src -u -t types/index.xml",
+    "template": "typal compile/template.js -T compile/index.js -t types/api.xml",
+    "externs": "typal types/externs.js",
+    "args": "argufy -o src/bin/get-args.js"
+  },
+  "bin": {
+    "mnp": "compile/bin/mnp.js",
+    "mnp-dev": "src/bin/index.js"
+  },
+  "files": [
+    "build",
+    "src",
+    "compile",
+    "stdlib",
+    "types/externs.js",
+    "types/index.js",
+    "src/bin/index.js"
+  ],
+  "externs": "types/externs.js",
+  "repository": {
+    "type": "git",
+    "url": "{{ repo.git_url }}"
+  },
+  "keywords": [],
+  "author": "{{ author_name }} <{{ author_email }}>",
+  "license": "{{ license_spdx }}",
+  "bugs": {
+    "url": "{{ repo.html_url }}/issues"
+  },
+  "homepage": "{{ homepage }}",
+  "devDependencies": {
+    "alamode": "^3.2.0",
+    "argufy": "^1.7.1",
+    "depack": "^1.0.1",
+    "documentary": "^1.34.1",
+    "erte": "^1.2.0",
+    "eslint-config-artdeco": "1.0.1",
+    "indicatrix": "^1.4.0",
+    "usually": "^1.2.0",
+    "yarn-s": "1.2.1",
+    "zoroaster": "^4.1.2"
+  }
+}

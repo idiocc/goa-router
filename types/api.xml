@@ -1,0 +1,6 @@
+<types namespace="_myNewPackage">
+  <method name="myNewPackage" async return="string">
+    <arg type="!_myNewPackage.Config" name="config">The config.</arg>
+    {{ description }}
+  </method>
+</types>

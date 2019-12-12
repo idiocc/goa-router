@@ -1,0 +1,17 @@
+<arguments>
+  <arg command name="input">
+    The path to the input file.
+  </arg>
+  <arg name="output" short="o" default="-">
+    Where to save the output. By default prints to stdout.
+  </arg>
+  <arg boolean name="init" short="i">
+    Initialise in the current folder.
+  </arg>
+  <arg boolean name="help" short="h">
+    Print the help information and exit.
+  </arg>
+  <arg boolean name="version" short="v">
+    Show the version's number and exit.
+  </arg>
+</arguments>
