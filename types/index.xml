@@ -1,4 +1,5 @@
 <types namespace="_goa">
+  <import name="Middleware" from="goa" ns="_goa" link="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid" />
   <type name="AllowedMethodsOptions">
     <prop boolean name="throw">
       Throw error instead of setting status and header.
@@ -15,7 +16,7 @@
     <arg type="!_goa.RouterConfig" name="opts" opt>
       The options for the router.
     </arg>
-    <fn name="allowedMethods">
+    <fn name="allowedMethods" return="!_goa.Middleware">
       <arg type="!_goa.AllowedMethodsOptions" name="options">The options.</arg>
       Returns separate middleware for responding to `OPTIONS` requests with
       an `Allow` header containing the allowed methods, as well as responding
@@ -78,7 +79,7 @@
         // /users/3/friends => [{"id": 4, "name": "TJ"}]
       ```
     </fn>
-    <fn static name="url">
+    <fn static name="url" return="string">
       <arg string name="path">
         The URL pattern.
       </arg>

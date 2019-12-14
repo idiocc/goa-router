@@ -10,7 +10,9 @@ import router from '@goa/router'
 
 <!-- <typedef method="router">types/api.xml</typedef> -->
 
-<typedef name="Router" narrow slim>types/index.xml</typedef>
+<typedef name="Router" narrow slimFunctions>types/index.xml</typedef>
+
+<typedef name="RouterConfig" narrow slimFunctions>types/index.xml</typedef>
 
 %EXAMPLE: example, ../src => @goa/router%
 %FORK example%

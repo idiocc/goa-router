@@ -12,7 +12,7 @@ yarn add @goa/router
 
 - [Table Of Contents](#table-of-contents)
 - [API](#api)
-  * [`_goa.Router`](#type-_goarouter)
+  * [`Router`](#type-router)
 - [Copyright & License](#copyright--license)
 
 <p align="center"><a href="#table-of-contents">
@@ -31,7 +31,7 @@ import router from '@goa/router'
   <img src="/.documentary/section-breaks/1.svg?sanitize=true">
 </a></p>
 
-<strong><a name="type-_goarouter">`_goa.Router`</a></strong>
+__<a name="type-router">`Router`</a>__
 <table>
  <thead><tr>
   <th>Name</th>
@@ -39,47 +39,41 @@ import router from '@goa/router'
  </tr></thead>
  <tr>
   <td rowSpan="3" align="center"><ins>constructor</ins></td>
-  <td><em>new (opts?: !_goa.RouterConfig) => <a href="#type-_goarouter">_goa.Router</a></em></td>
+  <td><em>new (opts?: <a href="#type-routerconfig" title="Config for the router.">!RouterConfig</a>) => <a href="#type-router">Router</a></em></td>
  </tr>
  <tr></tr>
  <tr>
   <td>
-   Constructor method.<br/>
-   <kbd>opts</kbd> <em><code>!_goa.RouterConfig</code></em> (optional): The options for the router.
+   Constructor method.
   </td>
  </tr>
  <tr>
   <td rowSpan="3" align="center"><kbd>static</kbd> <ins>url</ins></td>
-  <td><em>(path: string, args: !Array&lt;!Object&gt;) => ?</em></td>
+  <td><em>(path: string, args: !Array&lt;!Object&gt;) => string</em></td>
  </tr>
  <tr></tr>
  <tr>
   <td>
-
-Generate URL from url pattern and given `params`.
-
-```javascript
+   Generate URL from url pattern and given <code>params</code>.
+   
+   ```javascript
 const url = Router.url('/users/:id', {id: 1});
 // => "/users/1"
 ```
-<br/>
-<kbd><strong>path*</strong></kbd> <em>`string`</em>: The URL pattern.<br/>
-<kbd><strong>args*</strong></kbd> <em><code>!Array&lt;!Object&gt;</code></em>: The URL parameters.
   </td>
  </tr>
  <tr>
   <td rowSpan="3" align="center"><ins>allowedMethods</ins></td>
-  <td><em>(options: !_goa.AllowedMethodsOptions) => ?</em></td>
+  <td><em>(options: !AllowedMethodsOptions) => <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a></em></td>
  </tr>
  <tr></tr>
  <tr>
   <td>
-
-Returns separate middleware for responding to `OPTIONS` requests with
-an `Allow` header containing the allowed methods, as well as responding
-with `405 Method Not Allowed` and `501 Not Implemented` as appropriate.
-
-```javascript
+   Returns separate middleware for responding to <code>OPTIONS</code> requests with
+   an <code>Allow</code> header containing the allowed methods, as well as responding
+   with <code>405 Method Not Allowed</code> and <code>501 Not Implemented</code> as appropriate.
+   
+   ```javascript
 import Goa from '＠goa/koa'
 import Router from '＠goa/router'
 
@@ -89,10 +83,10 @@ const router = new Router()
 app.use(router.routes());
 app.use(router.allowedMethods());
 ```
-
-**Example with [Boom](https://github.com/hapijs/boom)**
-
-```javascript
+   
+   <strong>Example with <a href="https://github.com/hapijs/boom">Boom</a></strong>
+   
+   ```javascript
 import Goa from '＠goa/koa'
 import Router from '＠goa/router'
 import Boom from 'boom'
@@ -107,21 +101,18 @@ app.use(router.allowedMethods({
   methodNotAllowed: () => new Boom.methodNotAllowed()
 }))
 ```
-<br/>
-<kbd><strong>options*</strong></kbd> <em>`!_goa.AllowedMethodsOptions`</em>: The options.
   </td>
  </tr>
  <tr>
   <td rowSpan="3" align="center"><ins>param</ins></td>
-  <td><em>(param: string, middleware: !_goa.Middleware) => ?</em></td>
+  <td><em>(param: string, middleware: <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a>) => ?</em></td>
  </tr>
  <tr></tr>
  <tr>
   <td>
-
-Run middleware for named route parameters. Useful for auto-loading or validation.
-
-```js
+   Run middleware for named route parameters. Useful for auto-loading or validation.
+   
+   ```js
 router
   .param('user', (id, ctx, next) => {
     ctx.user = users[id];
@@ -139,26 +130,22 @@ router
   // /users/3 => {"id": 3, "name": "Alex"}
   // /users/3/friends => [{"id": 4, "name": "TJ"}]
 ```
-<br/>
-<kbd><strong>param*</strong></kbd> <em>`string`</em>: The name of the param.<br/>
-<kbd><strong>middleware*</strong></kbd> <em>`!_goa.Middleware`</em>: The middleware.
   </td>
  </tr>
  <tr>
   <td rowSpan="3" align="center"><ins>use</ins></td>
-  <td><em>(path: (string | !Array&lt;string&gt; | !_goa.Middleware), ...middleware: !_goa.Middleware[]) => ?</em></td>
+  <td><em>(path: (string | !Array&lt;string&gt; | <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a>), ...middleware: <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a>[]) => ?</em></td>
  </tr>
  <tr></tr>
  <tr>
   <td>
-
-Use given middleware.
-
-Middleware run in the order they are defined by `.use()`. They are invoked
-sequentially, requests start at the first middleware and work their way
-"down" the middleware stack.
-
-```javascript
+   Use given middleware.
+   
+   Middleware run in the order they are defined by <code>.use()</code>. They are invoked
+   sequentially, requests start at the first middleware and work their way
+   "down" the middleware stack.
+   
+   ```javascript
 // session middleware will run before authorize
 router
   .use(session())
@@ -172,9 +159,45 @@ router.use(['/users', '/admin'], userAuth())
 
 app.use(router.routes())
 ```
-<br/>
-<kbd><strong>path*</strong></kbd> <em><code>(string \| !Array&lt;string&gt; \| !_goa.Middleware)</code></em>: The path or an array of paths. Pass middleware without path to apply to `*`.<br/>
-<kbd>...middleware</kbd> <em>`!_goa.Middleware`</em> (optional): The middleware to use.
+  </td>
+ </tr>
+</table>
+
+__<a name="type-routerconfig">`RouterConfig`</a>__: Config for the router.
+<table>
+ <thead><tr>
+  <th>Name</th>
+  <th>Type &amp; Description</th>
+ </tr></thead>
+ <tr>
+  <td rowSpan="3" align="center">methods</td>
+  <td><em>!Array&lt;string&gt;</em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   The methods to serve.
+   Default <code>HEAD</code>, <code>OPTIONS</code>, <code>GET</code>, <code>PUT</code>, <code>PATCH</code>, <code>POST</code>, <code>DELETE</code>.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">prefix</td>
+  <td><em>string</em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Prefix router paths.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">routerPath</td>
+  <td><em>string</em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Custom routing path.
   </td>
  </tr>
 </table>
