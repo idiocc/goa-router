@@ -68,6 +68,37 @@ class Router extends _Router {
   allowedMethods() {
 
   }
+  /**
+   * Run middleware for named route parameters. Useful for auto-loading or
+   * validation.
+   *
+   * @example
+   *
+   * ```js
+   * router
+   *   .param('user', (id, ctx, next) => {
+   *     ctx.user = users[id];
+   *     if (!ctx.user) return ctx.status = 404;
+   *     return next();
+   *   })
+   *   .get('/users/:user', ctx => {
+   *     ctx.body = ctx.user;
+   *   })
+   *   .get('/users/:user/friends', ctx => {
+   *     return ctx.user.getFriends().then(function(friends) {
+   *       ctx.body = friends;
+   *     });
+   *   })
+   *   // /users/3 => {"id": 3, "name": "Alex"}
+   *   // /users/3/friends => [{"id": 4, "name": "TJ"}]
+   * ```
+   *
+   * @param {string} param
+   * @param {!_goa.Middleware} middleware
+   */
+  param(param, middleware) {
+    return super.param(param, middleware)
+  }
 }
 
 module.exports = Router

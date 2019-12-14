@@ -12,7 +12,7 @@
   </type>
 
   <interface name="Router">
-    <arg type="!_goa.RouterConfig" name="opts" opts>
+    <arg type="!_goa.RouterConfig" name="opts" opt>
       The options for the router.
     </arg>
     <fn name="allowedMethods">
@@ -50,10 +50,80 @@
       }))
       ```
     </fn>
+    <fn name="param">
+      <arg string name="param">
+        The name of the param.
+      </arg>
+      <arg type="!_goa.Middleware" name="middleware">
+        The middleware.
+      </arg>
+      Run middleware for named route parameters. Useful for auto-loading or validation.
+
+      ```js
+      router
+        .param('user', (id, ctx, next) => {
+          ctx.user = users[id];
+          if (!ctx.user) return ctx.status = 404;
+          return next();
+        })
+        .get('/users/:user', ctx => {
+          ctx.body = ctx.user;
+        })
+        .get('/users/:user/friends', ctx => {
+          return ctx.user.getFriends().then(function(friends) {
+            ctx.body = friends;
+          });
+        })
+        // /users/3 => {"id": 3, "name": "Alex"}
+        // /users/3/friends => [{"id": 4, "name": "TJ"}]
+      ```
+    </fn>
+    <fn static name="url">
+      <arg string name="path">
+        The URL pattern.
+      </arg>
+      <arg type="!Array<!Object>" name="args">
+        The URL parameters.
+      </arg>
+      Generate URL from url pattern and given `params`.
+
+      ```javascript
+      const url = Router.url('/users/:id', {id: 1});
+      // => "/users/1"
+      ```
+    </fn>
+    <fn name="use">
+      <arg type="string|!Array<string>|!_goa.Middleware" name="path">
+        The path or an array of paths. Pass middleware without path to apply to `*`.
+      </arg>
+      <arg type="!_goa.Middleware" name="...middleware">
+        The middleware to use.
+      </arg>
+      Use given middleware.
+
+      Middleware run in the order they are defined by `.use()`. They are invoked
+      sequentially, requests start at the first middleware and work their way
+      "down" the middleware stack.
+
+      ```javascript
+      // session middleware will run before authorize
+      router
+        .use(session())
+        .use(authorize())
+
+      // use middleware only with given path
+      router.use('/users', userAuth())
+
+      // or with an array of paths
+      router.use(['/users', '/admin'], userAuth())
+
+      app.use(router.routes())
+      ```
+    </fn>
   </interface>
 
   <type record name="LayerConfig" desc="Options for the layer.">
-    <prop string name="name">
+    <prop type="string|null" name="name">
       Route name.
     </prop>
     <prop boolean name="sensitive" default="false">
@@ -62,15 +132,21 @@
     <prop boolean name="strict" default="false">
       Require the trailing slash.
     </prop>
+    <prop boolean name="ignoreCaptures" default="false">
+      Ignore captures.
+    </prop>
   </type>
 
   <type record name="RouterConfig" desc="Config for the router.">
-    <prop type="!Array<string>" name="methods">
+    <prop type="!Array<string>" name="methods" opt>
       The methods to serve.
       Default `HEAD`, `OPTIONS`, `GET`, `PUT`, `PATCH`, `POST`, `DELETE`.
     </prop>
     <prop string name="prefix" opt>
       Prefix router paths.
+    </prop>
+    <prop string name="routerPath" opt>
+      Custom routing path.
     </prop>
   </type>
 </types>

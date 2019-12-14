@@ -12,6 +12,7 @@ import { METHODS } from 'http'
 import Layer from './layer'
 
 const debug = Debug('koa-router')
+
 export default class Router {
   /**
    * Create a new router.
@@ -53,6 +54,9 @@ export default class Router {
     this.methods = methods
 
     this.params = {}
+    /**
+     * @type {!Array<!Layer>}
+     */
     this.stack = []
   }
   /**
@@ -120,22 +124,20 @@ export default class Router {
    * @param {String} path
    * @param {Function=} middleware You may also pass multiple middleware.
    * @param {Function} callback
-   * @returns {Router}
    * @private
    */
-
   all(name, path, middleware) {
-    var middleware
+    let mw
 
-    if (typeof path == 'string') {
-      middleware = Array.prototype.slice.call(arguments, 2)
+    if (typeof path == 'string' || path instanceof RegExp) {
+      mw = middleware
     } else {
-      middleware = Array.prototype.slice.call(arguments, 1)
+      mw = [path, ...middleware]
       path = name
       name = null
     }
 
-    this.register(path, methods, middleware, {
+    this.register(path, methods, mw, {
       name: name,
     })
 
@@ -186,36 +188,33 @@ export default class Router {
   /**
    * Create and register a route.
    *
-   * @param {String} path Path string.
-   * @param {Array.<String>} methods Array of HTTP verbs.
-   * @param {Function} middleware Multiple middleware also accepted.
-   * @returns {Layer}
+   * @param {string|!Array<string>} path The path string or an array of paths.
+   * @param {!Array<string>} methods Array of HTTP verbs.
+   * @param {!_goa.Middleware} middleware Multiple middleware also accepted.
    * @private
    */
-
-  register(path, methods, middleware, opts) {
-    opts = opts || {}
-
-    var router = this
-    var stack = this.stack
+  register(path, methods, middleware, opts = {}) {
+    const { ignoreCaptures, prefix = this.opts.prefix,
+      strict = this.opts.strict, end, name,
+      sensitive = this.opts.sensitive } = opts
 
     // support array of paths
     if (Array.isArray(path)) {
-      path.forEach(function (p) {
-        router.register.call(router, p, methods, middleware, opts)
+      path.forEach((p) => {
+        this.register(p, methods, middleware, opts)
       })
 
       return this
     }
 
     // create route
-    var route = new Layer(path, methods, middleware, {
-      end: opts.end === false ? opts.end : true,
-      name: opts.name,
-      sensitive: opts.sensitive || this.opts.sensitive || false,
-      strict: opts.strict || this.opts.strict || false,
-      prefix: opts.prefix || this.opts.prefix || "",
-      ignoreCaptures: opts.ignoreCaptures,
+    const route = new Layer(path, methods, middleware, {
+      end,
+      name,
+      sensitive,
+      strict,
+      prefix: prefix || '',
+      ignoreCaptures,
     })
 
     if (this.opts.prefix) {
@@ -223,11 +222,11 @@ export default class Router {
     }
 
     // add parameter middleware
-    Object.keys(this.params).forEach(function (param) {
+    Object.keys(this.params).forEach((param) => {
       route.param(param, this.params[param])
-    }, this)
+    })
 
-    stack.push(route)
+    this.stack.push(route)
 
     return route
   }
@@ -240,9 +239,9 @@ export default class Router {
    */
 
   route(name) {
-    var routes = this.stack
+    const routes = this.stack
 
-    for (var len = routes.length, i=0; i<len; i++) {
+    for (let len = routes.length, i=0; i<len; i++) {
       if (routes[i].name && routes[i].name === name) {
         return routes[i]
       }
@@ -283,40 +282,37 @@ export default class Router {
    * @param {Object} params url parameters
    * @param {Object} [options] options parameter
    * @param {Object|String} [options.query] query options
-   * @returns {String|Error}
    */
-
-  url (name, params) {
-    var route = this.route(name)
+  url(name, ...params) {
+    const route = this.route(name)
 
     if (route) {
-      var args = Array.prototype.slice.call(arguments, 1)
-      return route.url.apply(route, args)
+      return route.url.apply(route, ...params)
     }
 
-    return new Error("No route found for name: " + name)
+    return new Error(`No route found for name: ${name}`)
   }
 
   /**
    * Match given `path` and return corresponding routes.
    *
-   * @param {String} path
-   * @param {String} method
-   * @returns {Object.<path, pathAndMethod>} returns layers that matched path and
+   * @param {string} path
+   * @param {string} method
    * path and method.
    * @private
    */
-
   match(path, method) {
-    var layers = this.stack
-    var layer
-    var matched = {
+    const layers = this.stack
+    let layer
+    const matched = {
+      /** @type {!Array<!Layer>} */
       path: [],
+      /** @type {!Array<!Layer>} */
       pathAndMethod: [],
       route: false,
     }
 
-    for (var len = layers.length, i = 0; i < len; i++) {
+    for (let len = layers.length, i = 0; i < len; i++) {
       layer = layers[i]
 
       debug('test %s %s', layer.path, layer.regexp)
@@ -324,7 +320,7 @@ export default class Router {
       if (layer.match(path)) {
         matched.path.push(layer)
 
-        if (layer.methods.length === 0 || ~layer.methods.indexOf(method)) {
+        if (layer.methods.length == 0 || !layer.methods.includes(method)) {
           matched.pathAndMethod.push(layer)
           if (layer.methods.length) matched.route = true
         }
@@ -359,14 +355,12 @@ export default class Router {
    *   // /users/3/friends => [{"id": 4, "name": "TJ"}]
    * ```
    *
-   * @param {String} param
-   * @param {Function} middleware
-   * @returns {Router}
+   * @param {string} param
+   * @param {!_goa.Middleware} middleware
    */
-
   param(param, middleware) {
     this.params[param] = middleware
-    this.stack.forEach(function (route) {
+    this.stack.forEach((route) => {
       route.param(param, middleware)
     })
     return this
@@ -378,12 +372,12 @@ export default class Router {
    * @example
    *
    * ```javascript
-   * var url = Router.url('/users/:id', {id: 1});
+   * const url = Router.url('/users/:id', {id: 1});
    * // => "/users/1"
    * ```
    *
    * @param {string} path url pattern
-   * @param {Object} args url parameters
+   * @param {Array<!Object>} args url parameters
    */
   static url(path, ...args) {
     return Layer.prototype.url.apply({ path }, ...args)
@@ -410,7 +404,136 @@ export default class Router {
 
     return this
   }
+  /**
+   * Use given middleware.
+   *
+   * Middleware run in the order they are defined by `.use()`. They are invoked
+   * sequentially, requests start at the first middleware and work their way
+   * "down" the middleware stack.
+   *
+   * @example
+   *
+   * ```javascript
+   * // session middleware will run before authorize
+   * router
+   *   .use(session())
+   *   .use(authorize());
+   *
+   * // use middleware only with given path
+   * router.use('/users', userAuth());
+   *
+   * // or with an array of paths
+   * router.use(['/users', '/admin'], userAuth());
+   *
+   * app.use(router.routes());
+   * ```
+   *
+   * @param {string|!Array<string>|!_goa.Middleware} path
+   * @param {!Array<!_goa.Middleware>} middleware
+   */
+  use(path, ...middleware) {
+    // support array of paths
+    if (Array.isArray(path) && typeof path[0] == 'string') {
+      path.forEach((p) => {
+        this.use(p, ...middleware)
+      })
+      return this
+    }
+
+    const hasPath = typeof path == 'string'
+    if (!hasPath) {
+      path = undefined
+      middleware.unshift(path)
+    }
+
+    middleware.forEach((m) => {
+      const router = /** @type {Router} */ (m.router)
+      if (router) {
+        router.stack.forEach((nestedLayer) => {
+          if (path) nestedLayer.setPrefix(path)
+          if (this.opts.prefix) nestedLayer.setPrefix(this.opts.prefix)
+          this.stack.push(nestedLayer)
+        })
+
+        if (this.params) {
+          Object.keys(this.params).forEach((key) => {
+            router.param(key, this.params[key])
+          })
+        }
+      } else {
+        this.register(path || '(.*)', [], m, { end: false, ignoreCaptures: !hasPath })
+      }
+    })
+
+    return this
+  }
+  get routes() {
+    return this.middleware
+  }
+  /**
+   * Returns router middleware which dispatches a route matching the request.
+   */
+  middleware() {
+    /**
+     * @type {!_goa.Middleware}
+     */
+    const dispatch = (ctx, next) => {
+      debug('%s %s', ctx.method, ctx.path)
+
+      const path = this.opts.routerPath || ctx.routerPath || ctx.path
+      const matched = this.match(path, ctx.method)
+      let layerChain
+
+      if (ctx.matched) {
+        ctx.matched.push(matched.path)
+      } else {
+        ctx.matched = matched.path
+      }
+
+      ctx.router = this
+
+      if (!matched.route) return next()
+
+      const matchedLayers = matched.pathAndMethod
+      const mostSpecificLayer = matchedLayers[matchedLayers.length - 1]
+      ctx._matchedRoute = mostSpecificLayer.path
+      if (mostSpecificLayer.name) {
+        ctx._matchedRouteName = mostSpecificLayer.name
+      }
+
+      layerChain = matchedLayers.reduce((acc, layer) => {
+        /**
+         * @type {!_goa.Middleware}
+         */
+        const link = async (c, n) => {
+          c.captures = layer.captures(path)
+          c.params = layer.params(path, c.captures, c.params)
+          c.routerName = layer.name
+          return await n()
+        }
+        acc.push(link)
+        return acc.concat(layer.stack)
+      }, [])
+
+      return compose(layerChain)(ctx, next)
+    }
+
+    dispatch.router = this
+
+    return dispatch
+  }
+  /**
+   * @suppress {checkTypes}
+   */
+  get 'del'() {
+    /**
+     * @suppress {checkTypes}
+     */
+    return this['delete']
+  }
 }
+
+const methods = METHODS.map((m) => m.toLowerCase())
 
 /**
  * Create `router.verb()` methods, where *verb* is one of the HTTP verbs such
@@ -525,16 +648,9 @@ export default class Router {
  * The [path-to-regexp](https://github.com/pillarjs/path-to-regexp) module is
  * used to convert paths to regular expressions.
  *
- * @name get|put|post|patch|delete|del
- * @memberof module:koa-router.prototype
- * @param {String} path
- * @param {Function=} middleware route middleware(s)
- * @param {Function} callback route callback
- * @returns {Router}
  */
-
-METHODS.map((m) => m.toLowerCase()).forEach((method) => {
-  Router.prototype[method] = function(name, path, ...middleware) {
+methods.forEach((method) => {
+  function m(name, path, ...middleware) {
     let mw
 
     if (typeof path == 'string' || path instanceof RegExp) {
@@ -551,131 +667,8 @@ METHODS.map((m) => m.toLowerCase()).forEach((method) => {
 
     return this
   }
+  Router.prototype[method] = m
 })
-
-// Alias for `router.delete()` because delete is a reserved word
-Router.prototype.del = Router.prototype['delete']
-
-/**
- * Use given middleware.
- *
- * Middleware run in the order they are defined by `.use()`. They are invoked
- * sequentially, requests start at the first middleware and work their way
- * "down" the middleware stack.
- *
- * @example
- *
- * ```javascript
- * // session middleware will run before authorize
- * router
- *   .use(session())
- *   .use(authorize());
- *
- * // use middleware only with given path
- * router.use('/users', userAuth());
- *
- * // or with an array of paths
- * router.use(['/users', '/admin'], userAuth());
- *
- * app.use(router.routes());
- * ```
- *
- * @param {String=} path
- * @param {Function} middleware
- * @param {Function=} ...
- * @returns {Router}
- */
-
-Router.prototype.use = function () {
-  var router = this
-  var middleware = Array.prototype.slice.call(arguments)
-  var path
-
-  // support array of paths
-  if (Array.isArray(middleware[0]) && typeof middleware[0][0] === 'string') {
-    middleware[0].forEach(function (p) {
-      router.use.apply(router, [p].concat(middleware.slice(1)))
-    })
-
-    return this
-  }
-
-  var hasPath = typeof middleware[0] === 'string'
-  if (hasPath) {
-    path = middleware.shift()
-  }
-
-  middleware.forEach(function (m) {
-    if (m.router) {
-      m.router.stack.forEach(function (nestedLayer) {
-        if (path) nestedLayer.setPrefix(path)
-        if (router.opts.prefix) nestedLayer.setPrefix(router.opts.prefix)
-        router.stack.push(nestedLayer)
-      })
-
-      if (router.params) {
-        Object.keys(router.params).forEach(function (key) {
-          m.router.param(key, router.params[key])
-        })
-      }
-    } else {
-      router.register(path || '(.*)', [], m, { end: false, ignoreCaptures: !hasPath })
-    }
-  })
-
-  return this
-}
-
-/**
- * Returns router middleware which dispatches a route matching the request.
- *
- * @returns {Function}
- */
-
-Router.prototype.routes = Router.prototype.middleware = function () {
-  var router = this
-
-  var dispatch = function dispatch(ctx, next) {
-    debug('%s %s', ctx.method, ctx.path)
-
-    var path = router.opts.routerPath || ctx.routerPath || ctx.path
-    var matched = router.match(path, ctx.method)
-    var layerChain, layer, i
-
-    if (ctx.matched) {
-      ctx.matched.push.apply(ctx.matched, matched.path)
-    } else {
-      ctx.matched = matched.path
-    }
-
-    ctx.router = router
-
-    if (!matched.route) return next()
-
-    var matchedLayers = matched.pathAndMethod
-    var mostSpecificLayer = matchedLayers[matchedLayers.length - 1]
-    ctx._matchedRoute = mostSpecificLayer.path
-    if (mostSpecificLayer.name) {
-      ctx._matchedRouteName = mostSpecificLayer.name
-    }
-
-    layerChain = matchedLayers.reduce(function(memo, layer) {
-      memo.push(function(ctx, next) {
-        ctx.captures = layer.captures(path, ctx.captures)
-        ctx.params = layer.params(path, ctx.captures, ctx.params)
-        ctx.routerName = layer.name
-        return next()
-      })
-      return memo.concat(layer.stack)
-    }, [])
-
-    return compose(layerChain)(ctx, next)
-  }
-
-  dispatch.router = this
-
-  return dispatch
-}
 
 /**
  * @suppress {nonStandardJsDocs}

@@ -12,14 +12,17 @@ export default class Layer {
    * Initialize a new routing Layer with given `method`, `path`, and `middleware`.
    *
    * @param {string|!RegExp} path Path string or regular expression.
-   * @param {Array} methods Array of HTTP verbs.
-   * @param {Array} middleware Layer callback/middleware or series of.
-   * @param {!_goa.LayerOptions} [opts] The options.
+   * @param {!Array<string>} methods Array of HTTP verbs.
+   * @param {!Array<!_goa.Middleware>} middleware Layer callback/middleware or series of.
+   * @param {!_goa.LayerConfig} [opts] The options.
    */
   constructor(path, methods, middleware, opts = {}) {
     const { name = null } = opts
     this.opts = opts
     this.name = name
+    /**
+     * @type {!Array<string>}
+     */
     this.methods = []
     this.paramNames = []
     this.stack = Array.isArray(middleware) ? middleware : [middleware]
@@ -208,3 +211,12 @@ function safeDecodeURIComponent(text) {
     return text
   }
 }
+
+/**
+ * @suppress {nonStandardJSDocs}
+ * @typedef {import('../').LayerConfig} _goa.LayerConfig
+ */
+/**
+ * @suppress {nonStandardJSDocs}
+ * @typedef {import('@typedefs/goa').Middleware} _goa.Middleware
+ */
