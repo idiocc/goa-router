@@ -7,10 +7,35 @@
   resolved "https://registry.yarnpkg.com/@depack/nodejs/-/nodejs-1.1.4.tgz#36195f33fef7a6b9b1f93a043a52a87fac087729"
   integrity sha512-vtmNtylOPNjFkQHOgC1M8Ru9c211FgtD3sG3KGS9dvlcHDUAiNoJ52gVwOep5Tkp0I4qmwPx3oyTV6OwKchmlg==
 
+"@externs/goa@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@externs/goa/-/goa-0.1.1.tgz#8e4b952a3480c3b5607c88183a4cb92ae240df84"
+  integrity sha512-f5JXe5IJUkeEj5w7g6UHm3+9x9zaRdAPQ0iEN7VRV0p9zE5+z1f1nH0ZxRs6A3thVdlXqqknqo0WWW2Ufsno6A==
+
 "@externs/nodejs@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@externs/nodejs/-/nodejs-1.5.0.tgz#88ff9e7a03c53d19101ee49768e598ff0f39c9ad"
   integrity sha512-2J+FRDjGfKKldTQ5YqLmhQ04/sA9swTQ6OTtPzo4xhg41u1+eiufciXiqW6u3UXEcmm413a27NakgnLbzfp0wQ==
+
+"@goa/compose@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@goa/compose/-/compose-1.0.0.tgz#3672a32269bec4bf061c8dd50a7ab22872c156c3"
+  integrity sha512-NdFS/ijCZ4e1WSHZLsQq5CbUHvkK6a20tx2wfNJS2hw55o8iYpmFDGTSgDnQwj09/Lxy5Kj8R5TNq9+leK41xA==
+
+"@goa/http-errors@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@goa/http-errors/-/http-errors-1.0.0.tgz#bf79e339165823d81f2871b75a13379ed2b0462b"
+  integrity sha512-R1P3JyTKALOm7rlUsDYgDKy5NeE9Y0UjII45xGajDCMOY7PjOtvKcPcxcYiA6fXYnFyEQqBq/BGf4/7dSfA6Eg==
+
+"@idio/debug@^1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@idio/debug/-/debug-1.2.3.tgz#ff002ec176bf45782aca7f70adcdde650fcb2a04"
+  integrity sha512-MalXJDXpDY7p8oNlKqQTmk6d5Q5WTeT18HqvySj4byU0BX2G7KX+IISUMH7uLdYv9y/usKU+uZO+5n2v41/kqw==
+
+"@typedefs/goa@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@typedefs/goa/-/goa-0.0.6.tgz#2b6c065f279bdc11eec5295730bb5208f766c8bc"
+  integrity sha512-lqtWPcGLXzjiD3ygTtSk19d32YJkQMPFhsHVcZXWLJqwGCTIC+6rnTq9Fc6r4fFj51S+9nxTkJdcCmj6dNkbNw==
 
 "@zoroaster/assert@^1.0.2":
   version "1.0.2"
@@ -22,10 +47,10 @@
   resolved "https://registry.yarnpkg.com/@zoroaster/mask/-/mask-2.3.0.tgz#57d169417e09e481efafccbffdd93cef919ec5e6"
   integrity sha512-fufal06pS/SYhOKHCmoFQ+PjhQwsCwMr2h0D2xeiVaXstaWHJVEiLg4+BU/KCmOOzLXLKikf81ca4zFXip7ScQ==
 
-alamode@^3.0.0, alamode@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/alamode/-/alamode-3.2.0.tgz#ee79dcf2483b5e28e9aac8cd0dfdc692aa333ca5"
-  integrity sha512-jDV6kYpIf9jHJUre1OOotW8EM2Qy58S/eOks2MWhjNz2xJQdEfyzFKbcdaZowC8sk5DKxsnapf/mZNE53B3haQ==
+alamode@^3.0.0, alamode@^3.2.0, alamode@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/alamode/-/alamode-3.3.0.tgz#5a73ebb8eae847934f747d67c2680698061b7bbe"
+  integrity sha512-/Xi0rZ0HAyobAIi8DJQMeFF3kRrr15PGuYRwvxmQaOqSO3WJgXOsmhL6sZQuvD/okZztzujMxMA+21WOD2rYyQ==
 
 depack@^1.0.1:
   version "1.0.1"
@@ -35,14 +60,14 @@ depack@^1.0.1:
     "@depack/nodejs" "^1.1.4"
     "@externs/nodejs" "^1.5.0"
 
-documentary@^1.34.1:
-  version "1.34.1"
-  resolved "https://registry.yarnpkg.com/documentary/-/documentary-1.34.1.tgz#0b556051b9d1c28dcd52527332fab5bcffa117b9"
-  integrity sha512-Gi7XJ9KQYOxObCEFq0rjmP0c7CVhlo1KTz1aw17qq4P7LGkS7YRN/5PWxPOM1a/87kWIOV/zekn5ZaoWdH9sMQ==
+documentary@^1.34.2:
+  version "1.34.2"
+  resolved "https://registry.yarnpkg.com/documentary/-/documentary-1.34.2.tgz#f2c2825d83d0c9258a1175ec8bf363220862f751"
+  integrity sha512-gXAfg9kuTTIXhbOYPfNkrSpKsupMlg2ti3zLwYLh/X4Hzey6pEDvHoFOvkjzLgruc80DJjOdXl/f0ZkbV3QB0g==
   dependencies:
-    alamode "^3.0.0"
-    preact "8.5.2"
-    typal "^1.22.6"
+    alamode "^3.2.0"
+    preact "8.5.3"
+    typal "^1.22.9"
 
 erte@^1.2.0:
   version "1.2.0"
@@ -54,15 +79,15 @@ eslint-config-artdeco@1.0.1:
   resolved "https://registry.yarnpkg.com/eslint-config-artdeco/-/eslint-config-artdeco-1.0.1.tgz#4451c9d0ed1ce4d33dfd43a6315f12c8bfb04274"
   integrity sha1-RFHJ0O0c5NM9/UOmMV8SyL+wQnQ=
 
-preact@8.5.2:
-  version "8.5.2"
-  resolved "https://registry.yarnpkg.com/preact/-/preact-8.5.2.tgz#2f532da485287c07369e08150cf4d23921a09789"
-  integrity sha512-37tlDJGq5IQKqGUbqPZ7qPtsTOWFyxe+ojAOFfzKo0dEPreenqrqgJuS83zGpeGAqD9h9L9Yr7QuxH2W4ZrKxg==
+preact@8.5.3:
+  version "8.5.3"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-8.5.3.tgz#78c2a5562fcecb1fed1d0055fa4ac1e27bde17c1"
+  integrity sha512-O3kKP+1YdgqHOFsZF2a9JVdtqD+RPzCQc3rP+Ualf7V6rmRDchZ9MJbiGTT7LuyqFKZqlHSOyO/oMFmI2lVTsw==
 
-typal@^1.22.6:
-  version "1.22.7"
-  resolved "https://registry.yarnpkg.com/typal/-/typal-1.22.7.tgz#fd0c13d670f662094f8f46c04aefd3f8be1e9fc0"
-  integrity sha512-U/YO1h9KA44bjwHqwBtZUQVHkWMZoB72X0wqShdQ+giQGd9n0f6efOesT71R8kGcewpAINNC8pSKim1P/z/Ogw==
+typal@^1.22.9:
+  version "1.22.9"
+  resolved "https://registry.yarnpkg.com/typal/-/typal-1.22.9.tgz#3c251d6843eee28d036be616f37960387a3bf156"
+  integrity sha512-wR4RwD7kh03rFpJrQ0pefUQBikBtAtAfwfWMXs0cdnxr3uKEADmhbfaJPfc0HpzkPloqMMXhImdePtJXxY0MVw==
 
 yarn-s@1.2.1:
   version "1.2.1"

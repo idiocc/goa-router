@@ -1,6 +1,6 @@
 import '../types/externs'
-import router from './'
+import Router from './'
 
 module.exports = {
-  '_router': router,
+  '_Router': Router,
 }
