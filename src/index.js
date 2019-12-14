@@ -5,7 +5,7 @@
  * @link https://github.com/alexmingoia/koa-router
  */
 
-import Debug from 'debug'
+import Debug from '@idio/debug'
 import compose from '@goa/compose'
 import HttpError from '@goa/http-errors'
 import { METHODS } from 'http'
@@ -320,7 +320,7 @@ export default class Router {
       if (layer.match(path)) {
         matched.path.push(layer)
 
-        if (layer.methods.length == 0 || !layer.methods.includes(method)) {
+        if (layer.methods.length == 0 || layer.methods.includes(method)) {
           matched.pathAndMethod.push(layer)
           if (layer.methods.length) matched.route = true
         }
@@ -505,11 +505,11 @@ export default class Router {
         /**
          * @type {!_goa.Middleware}
          */
-        const link = async (c, n) => {
+        const link = (c, n) => {
           c.captures = layer.captures(path)
           c.params = layer.params(path, c.captures, c.params)
           c.routerName = layer.name
-          return await n()
+          return n()
         }
         acc.push(link)
         return acc.concat(layer.stack)

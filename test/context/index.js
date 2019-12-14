@@ -1,32 +1,23 @@
-import { join } from 'path'
-import { debuglog } from 'util'
-
-const LOG = debuglog('@goa/router')
+import Goa from '@goa/koa'
+import HttpContext from '@contexts/http'
 
 /**
  * A testing context for the package.
  */
-export default class Context {
-  async _init() {
-    LOG('init context')
+export default class Context extends HttpContext {
+  constructor() {
+    super()
+  }
+  get app() {
+    if (this._app) return this._app
+    const app = new Goa()
+    this._app = app
+    return app
   }
   /**
-   * Example method.
+   * Starts the app for testing.
    */
-  example() {
-    return 'OK'
-  }
-  /**
-   * A tagged template that returns the relative path to the fixture.
-   * @param {string} file
-   * @example
-   * fixture`input.txt` // -> test/fixture/input.txt
-   */
-  fixture(file) {
-    const f = file.raw[0]
-    return join('test/fixture', f)
-  }
-  async _destroy() {
-    LOG('destroy context')
+  startApp() {
+    return this.startPlain(this.app.callback())
   }
 }

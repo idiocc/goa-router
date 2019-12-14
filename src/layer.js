@@ -1,4 +1,4 @@
-import Debug from 'debug'
+import Debug from '@idio/debug'
 import pathToRegExp, { compile, parse } from './path-to-regexp'
 import uri from 'urijs'
 
