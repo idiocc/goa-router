@@ -13,6 +13,7 @@ yarn add @goa/router
 - [Table Of Contents](#table-of-contents)
 - [API](#api)
   * [`Router`](#type-router)
+  * [`RouterConfig`](#type-routerconfig)
 - [Copyright & License](#copyright--license)
 
 <p align="center"><a href="#table-of-contents">
@@ -55,8 +56,8 @@ __<a name="type-router">`Router`</a>__
  <tr>
   <td>
    Generate URL from url pattern and given <code>params</code>.
-   
-   ```javascript
+
+```javascript
 const url = Router.url('/users/:id', {id: 1});
 // => "/users/1"
 ```
@@ -72,8 +73,8 @@ const url = Router.url('/users/:id', {id: 1});
    Returns separate middleware for responding to <code>OPTIONS</code> requests with
    an <code>Allow</code> header containing the allowed methods, as well as responding
    with <code>405 Method Not Allowed</code> and <code>501 Not Implemented</code> as appropriate.
-   
-   ```javascript
+
+```javascript
 import Goa from '＠goa/koa'
 import Router from '＠goa/router'
 
@@ -83,10 +84,10 @@ const router = new Router()
 app.use(router.routes());
 app.use(router.allowedMethods());
 ```
-   
+
    <strong>Example with <a href="https://github.com/hapijs/boom">Boom</a></strong>
-   
-   ```javascript
+
+```javascript
 import Goa from '＠goa/koa'
 import Router from '＠goa/router'
 import Boom from 'boom'
@@ -111,8 +112,8 @@ app.use(router.allowedMethods({
  <tr>
   <td>
    Run middleware for named route parameters. Useful for auto-loading or validation.
-   
-   ```js
+
+```js
 router
   .param('user', (id, ctx, next) => {
     ctx.user = users[id];
@@ -140,12 +141,12 @@ router
  <tr>
   <td>
    Use given middleware.
-   
+
    Middleware run in the order they are defined by <code>.use()</code>. They are invoked
    sequentially, requests start at the first middleware and work their way
    "down" the middleware stack.
-   
-   ```javascript
+
+```javascript
 // session middleware will run before authorize
 router
   .use(session())
