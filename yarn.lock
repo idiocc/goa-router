@@ -150,6 +150,11 @@ preact@8.5.3:
   resolved "https://registry.yarnpkg.com/preact/-/preact-8.5.3.tgz#78c2a5562fcecb1fed1d0055fa4ac1e27bde17c1"
   integrity sha512-O3kKP+1YdgqHOFsZF2a9JVdtqD+RPzCQc3rP+Ualf7V6rmRDchZ9MJbiGTT7LuyqFKZqlHSOyO/oMFmI2lVTsw==
 
+rqt@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/rqt/-/rqt-4.0.0.tgz#b57f64bf1b3b8b8109617f9dc67b9dd9ea5cb4d6"
+  integrity sha512-DUm6ZAt6ESeY46aFWhQwBvsOpXABRL5TTkpN/3KJjog7uk2ncYuU4UZ8FQV6qfWybihkMFCdoESNSxYQ5rSZiQ==
+
 typal@^1.22.9:
   version "1.22.9"
   resolved "https://registry.yarnpkg.com/typal/-/typal-1.22.9.tgz#3c251d6843eee28d036be616f37960387a3bf156"
