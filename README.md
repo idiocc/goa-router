@@ -238,7 +238,7 @@ router.prefix('/things/:thing_id')
   </td>
  </tr>
  <tr>
-  <td rowSpan="3" align="center"><ins>middleware</ins><br><ins>routes*</ins></td>
+  <td rowSpan="3" align="center"><ins>middleware</ins><br><ins>routes<sup><em>alias</em></sup></ins></td>
   <td><em>() => <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a></em></td>
  </tr>
  <tr></tr>
