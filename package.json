@@ -17,7 +17,7 @@
     "wiki": "NODE_DEBUG=doc doc documentary-wiki -W wiki -n _goa",
     "d": "yarn-s template d1 externs",
     "d1": "typal compile/index.js -u -t types/index.xml",
-    "template": "typal compile/template.js -T compile/index.js -t types/api.xml",
+    "template": "typal compile/template.js -T compile/index.js -t types",
     "externs": "typal types/externs.js"
   },
   "files": [
@@ -56,6 +56,7 @@
     "erte": "^1.2.0",
     "eslint-config-artdeco": "1.0.1",
     "rqt": "^4.0.0",
+    "typal": "^1.23.1",
     "yarn-s": "1.2.1",
     "zoroaster": "^4.1.2"
   },

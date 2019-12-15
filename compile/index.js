@@ -3,32 +3,27 @@ const { _Router } = require('./router')
 class Router extends _Router {
   /**
    * Create a new router.
-   *
+   * @param {!_goa.RouterConfig} [opts] Config for the router.
+   * @param {!Array<string>} [opts.methods] The methods to serve.
+   * Default `HEAD`, `OPTIONS`, `GET`, `PUT`, `PATCH`, `POST`, `DELETE`.
+   * @param {string} [opts.prefix] Prefix router paths.
+   * @param {string} [opts.routerPath] Custom routing path.
    * @example
-   *
-   * Basic usage:
-   *
    * ```js
-   * import Goa from '@goa/koa'
-   * import Router from '@goa/router'
+   * import Goa from '＠goa/koa'
+   * import Router from '＠goa/router'
    *
    * const app = new Goa()
    * const router = new Router()
    *
    * router.get('/', (ctx, next) => {
    *   // ctx.router available
-   * });
+   * })
    *
    * app
    *   .use(router.routes())
    *   .use(router.allowedMethods())
    * ```
-   *
-   * @param {!_goa.RouterConfig} [opts] Config for the router.
-   * @param {!Array<string>} [opts.methods] The methods to serve.
-   * Default `HEAD`, `OPTIONS`, `GET`, `PUT`, `PATCH`, `POST`, `DELETE`.
-   * @param {string} [opts.prefix] Prefix router paths.
-   * @param {string} [opts.routerPath] Custom routing path.
    */
   constructor(opts) {
     super(opts)
@@ -37,9 +32,12 @@ class Router extends _Router {
    * Returns separate middleware for responding to `OPTIONS` requests with
    * an `Allow` header containing the allowed methods, as well as responding
    * with `405 Method Not Allowed` and `501 Not Implemented` as appropriate.
-   *
+   * @param {!_goa.AllowedMethodsOptions} options
+   * @param {boolean} options.throw Throw error instead of setting status and header.
+   * @param {!Function} options.notImplemented Throw the returned value in place of the default `NotImplemented` error.
+   * @param {!Function} options.methodNotAllowed Throw the returned value in place of the default `MethodNotAllowed` error.
+   * @return {!_goa.Middleware}
    * @example
-   *
    * ```js
    * import Goa from '＠goa/koa'
    * import Router from '＠goa/router'
@@ -47,12 +45,10 @@ class Router extends _Router {
    * const app = new Goa()
    * const router = new Router()
    *
-   * app.use(router.routes());
-   * app.use(router.allowedMethods());
+   * app.use(router.routes())
+   * app.use(router.allowedMethods())
    * ```
-   *
    * **Example with [Boom](https://github.com/hapijs/boom)**
-   *
    * ```js
    * import Goa from '＠goa/koa'
    * import Router from '＠goa/router'
@@ -69,36 +65,28 @@ class Router extends _Router {
    * }))
    * ```
    */
-  allowedMethods() {
-
+  allowedMethods(options) {
+    return super.allowedMethods(options)
   }
   /**
-   * Run middleware for named route parameters. Useful for auto-loading or
-   * validation.
-   *
+   * Run middleware for named route parameters. Useful for auto-loading or validation.
+   * @param {string} param The name of the param.
+   * @param {!_goa.Middleware} middleware The middleware.
    * @example
-   *
    * ```js
    * router
    *   .param('user', (id, ctx, next) => {
-   *     ctx.user = users[id];
-   *     if (!ctx.user) return ctx.status = 404;
-   *     return next();
+   *     ctx.user = users[id]
+   *     if (!ctx.user) return ctx.status = 404
+   *     return next()
    *   })
    *   .get('/users/:user', ctx => {
-   *     ctx.body = ctx.user;
+   *     ctx.body = ctx.user
    *   })
-   *   .get('/users/:user/friends', ctx => {
-   *     return ctx.user.getFriends().then(function(friends) {
-   *       ctx.body = friends;
-   *     });
+   *   .get('/users/:user/friends', async ctx => {
+   *     ctx.body = await ctx.user.getFriends()
    *   })
-   *   // /users/3 => {"id": 3, "name": "Alex"}
-   *   // /users/3/friends => [{"id": 4, "name": "TJ"}]
    * ```
-   *
-   * @param {string} param
-   * @param {!_goa.Middleware} middleware
    */
   param(param, middleware) {
     return super.param(param, middleware)
@@ -109,66 +97,19 @@ module.exports = Router
 
 /* typal types/index.xml namespace */
 /**
+ * @typedef {import('@typedefs/goa').Middleware} _goa.Middleware
  * @typedef {_goa.AllowedMethodsOptions} AllowedMethodsOptions
  * @typedef {Object} _goa.AllowedMethodsOptions
  * @prop {boolean} throw Throw error instead of setting status and header.
  * @prop {!Function} notImplemented Throw the returned value in place of the default `NotImplemented` error.
  * @prop {!Function} methodNotAllowed Throw the returned value in place of the default `MethodNotAllowed` error.
- * @typedef {_goa.Router} Router `＠interface`
- * @typedef {Object} _goa.Router `＠interface`
+ * @typedef {_goa.Router} Router `＠interface` Create a new router.
+ * @typedef {Object} _goa.Router `＠interface` Create a new router.
  * @prop {(opts?: !_goa.RouterConfig) => _goa.Router} constructor Constructor method.
- * @prop {(options: !_goa.AllowedMethodsOptions) => ?} allowedMethods Returns separate middleware for responding to `OPTIONS` requests with
+ * @prop {(options: !_goa.AllowedMethodsOptions) => !_goa.Middleware} allowedMethods Returns separate middleware for responding to `OPTIONS` requests with
  * an `Allow` header containing the allowed methods, as well as responding
  * with `405 Method Not Allowed` and `501 Not Implemented` as appropriate.
- *
- * ```javascript
- * import Goa from '＠goa/koa'
- * import Router from '＠goa/router'
- *
- * const app = new Goa()
- * const router = new Router()
- *
- * app.use(router.routes());
- * app.use(router.allowedMethods());
- * ```
- *
- * **Example with [Boom](https://github.com/hapijs/boom)**
- *
- * ```javascript
- * import Goa from '＠goa/koa'
- * import Router from '＠goa/router'
- * import Boom from 'boom'
- *
- * const app = new Goa()
- * const router = new Router()
- *
- * app.use(router.routes())
- * app.use(router.allowedMethods({
- *   throw: true,
- *   notImplemented: () => new Boom.notImplemented(),
- *   methodNotAllowed: () => new Boom.methodNotAllowed()
- * }))
- * ```
  * @prop {(param: string, middleware: !_goa.Middleware) => ?} param Run middleware for named route parameters. Useful for auto-loading or validation.
- *
- * ```js
- * router
- *   .param('user', (id, ctx, next) => {
- *     ctx.user = users[id];
- *     if (!ctx.user) return ctx.status = 404;
- *     return next();
- *   })
- *   .get('/users/:user', ctx => {
- *     ctx.body = ctx.user;
- *   })
- *   .get('/users/:user/friends', ctx => {
- *     return ctx.user.getFriends().then(function(friends) {
- *       ctx.body = friends;
- *     });
- *   })
- *   // /users/3 => {"id": 3, "name": "Alex"}
- *   // /users/3/friends => [{"id": 4, "name": "TJ"}]
- * ```
  * @prop {(path: (string|!Array<string>|!_goa.Middleware), ...middleware: !_goa.Middleware[]) => ?} use Use given middleware.
  *
  * Middleware run in the order they are defined by `.use()`. They are invoked
@@ -201,4 +142,8 @@ module.exports = Router
  * Default `HEAD`, `OPTIONS`, `GET`, `PUT`, `PATCH`, `POST`, `DELETE`.
  * @prop {string} [prefix] Prefix router paths.
  * @prop {string} [routerPath] Custom routing path.
+ */
+
+/**
+ * @typedef {import('@typedefs/goa').Middleware} _goa.Middleware
  */

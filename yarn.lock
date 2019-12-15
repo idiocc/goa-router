@@ -160,6 +160,11 @@ typal@^1.22.9:
   resolved "https://registry.yarnpkg.com/typal/-/typal-1.22.9.tgz#3c251d6843eee28d036be616f37960387a3bf156"
   integrity sha512-wR4RwD7kh03rFpJrQ0pefUQBikBtAtAfwfWMXs0cdnxr3uKEADmhbfaJPfc0HpzkPloqMMXhImdePtJXxY0MVw==
 
+typal@^1.23.1:
+  version "1.23.1"
+  resolved "https://registry.yarnpkg.com/typal/-/typal-1.23.1.tgz#c4cd40a0640474fc74daf9ca17690711b9074a6e"
+  integrity sha512-MAjdrNHwaavVUY1Qzuv54M1DmRNGVkuIYZrcZGpHiPrrDmp3iQnXR+Vw+hsUrYsLC1F70QLhN0m7XowtkTnHmg==
+
 urijs@^1.19.2:
   version "1.19.2"
   resolved "https://registry.yarnpkg.com/urijs/-/urijs-1.19.2.tgz#f9be09f00c4c5134b7cb3cf475c1dd394526265a"

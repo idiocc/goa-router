@@ -64,7 +64,7 @@ export default class Layer {
    * @param {!Array<string>} captures
    * @param {!Object} [params]
    */
-  params(captures, params = {}) {
+  params(path, captures, params = {}) {
     for (let len = captures.length, i=0; i<len; i++) {
       if (this.paramNames[i]) {
         const c = captures[i]
@@ -150,30 +150,26 @@ export default class Layer {
    *   });
    * ```
    *
-   * @param {String} param
-   * @param {Function} middleware
+   * @param {string} param
+   * @param {!Function} middleware
    */
-  param(param, fn) {
-    var stack = this.stack
-    var params = this.paramNames
-    var middleware = function (ctx, next) {
-      return fn.call(this, ctx.params[param], ctx, next)
+  param(param, middleware) {
+    function mw (ctx, next) {
+      return middleware.call(this, ctx.params[param], ctx, next)
     }
-    middleware.param = param
+    mw.param = param
 
-    var names = params.map(function (p) {
-      return p.name
-    })
+    const names = this.paramNames.map(({ name }) => name)
 
-    var x = names.indexOf(param)
+    const x = names.indexOf(param)
     if (x > -1) {
       // iterate through the stack, to figure out where to place the handler fn
-      stack.some((fn, i) => {
+      this.stack.some((fn, i) => {
         // param handlers are always first, so when we find an fn w/o a param property, stop here
         // if the param handler at this part of the stack comes after the one we are adding, stop here
         if (!fn.param || names.indexOf(fn.param) > x) {
           // inject this param handler right before the current item
-          stack.splice(i, 0, middleware)
+          this.stack.splice(i, 0, mw)
           return true // then break the loop
         }
       })

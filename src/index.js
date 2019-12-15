@@ -16,27 +16,6 @@ const debug = Debug('koa-router')
 export default class Router {
   /**
    * Create a new router.
-   *
-   * @example
-   *
-   * Basic usage:
-   *
-   * ```javascript
-   * var Koa = require('koa');
-   * var Router = require('koa-router');
-   *
-   * var app = new Koa();
-   * var router = new Router();
-   *
-   * router.get('/', (ctx, next) => {
-   *   // ctx.router available
-   * });
-   *
-   * app
-   *   .use(router.routes())
-   *   .use(router.allowedMethods());
-   * ```
-   *
    * @param {!_goa.RouterConfig} [opts]
    */
   constructor(opts = {}) {
@@ -333,27 +312,6 @@ export default class Router {
   /**
    * Run middleware for named route parameters. Useful for auto-loading or
    * validation.
-   *
-   * @example
-   *
-   * ```javascript
-   * router
-   *   .param('user', (id, ctx, next) => {
-   *     ctx.user = users[id];
-   *     if (!ctx.user) return ctx.status = 404;
-   *     return next();
-   *   })
-   *   .get('/users/:user', ctx => {
-   *     ctx.body = ctx.user;
-   *   })
-   *   .get('/users/:user/friends', ctx => {
-   *     return ctx.user.getFriends().then(function(friends) {
-   *       ctx.body = friends;
-   *     });
-   *   })
-   *   // /users/3 => {"id": 3, "name": "Alex"}
-   *   // /users/3/friends => [{"id": 4, "name": "TJ"}]
-   * ```
    *
    * @param {string} param
    * @param {!_goa.Middleware} middleware

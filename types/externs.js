@@ -11,6 +11,7 @@ var _goa = {}
  */
 _goa.AllowedMethodsOptions
 /**
+ * Create a new router.
  * @param {!_goa.RouterConfig=} [opts] The options for the router.
  * @interface
  */
@@ -24,65 +25,19 @@ _goa.Router = function(opts) {}
  * ```
  * @param {string} path The URL pattern.
  * @param {!Array<!Object>} args The URL parameters.
+ * @return {string}
  */
 _goa.Router.url = function(path, args) {}
 /**
  * Returns separate middleware for responding to `OPTIONS` requests with
  * an `Allow` header containing the allowed methods, as well as responding
  * with `405 Method Not Allowed` and `501 Not Implemented` as appropriate.
- *
- * ```javascript
- * import Goa from '＠goa/koa'
- * import Router from '＠goa/router'
- *
- * const app = new Goa()
- * const router = new Router()
- *
- * app.use(router.routes());
- * app.use(router.allowedMethods());
- * ```
- *
- * **Example with [Boom](https://github.com/hapijs/boom)**
- *
- * ```javascript
- * import Goa from '＠goa/koa'
- * import Router from '＠goa/router'
- * import Boom from 'boom'
- *
- * const app = new Goa()
- * const router = new Router()
- *
- * app.use(router.routes())
- * app.use(router.allowedMethods({
- *   throw: true,
- *   notImplemented: () => new Boom.notImplemented(),
- *   methodNotAllowed: () => new Boom.methodNotAllowed()
- * }))
- * ```
  * @param {!_goa.AllowedMethodsOptions} options The options.
+ * @return {!_goa.Middleware}
  */
 _goa.Router.prototype.allowedMethods = function(options) {}
 /**
  * Run middleware for named route parameters. Useful for auto-loading or validation.
- *
- * ```js
- * router
- *   .param('user', (id, ctx, next) => {
- *     ctx.user = users[id];
- *     if (!ctx.user) return ctx.status = 404;
- *     return next();
- *   })
- *   .get('/users/:user', ctx => {
- *     ctx.body = ctx.user;
- *   })
- *   .get('/users/:user/friends', ctx => {
- *     return ctx.user.getFriends().then(function(friends) {
- *       ctx.body = friends;
- *     });
- *   })
- *   // /users/3 => {"id": 3, "name": "Alex"}
- *   // /users/3/friends => [{"id": 4, "name": "TJ"}]
- * ```
  * @param {string} param The name of the param.
  * @param {!_goa.Middleware} middleware The middleware.
  */
