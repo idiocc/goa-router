@@ -1,0 +1,104 @@
+<types ns="_goa">
+  <interface name="Router" desc="Create a new router."
+    example="example/jsdoc/constructor.js"
+    example-override="../../src => @goa/router">
+    <arg type="!_goa.RouterConfig" name="opts" opt>
+      The options for the router.
+    </arg>
+    <fn name="allowedMethods" return="!_goa.Middleware" example="example/jsdoc/allowed-methods.js, example/jsdoc/allowed-methods-boom.js" example-override="../../src => @goa/router" return="!_goa.Middleware">
+      <arg type="!_goa.AllowedMethodsOptions" name="options">The options.</arg>
+      Returns separate middleware for responding to `OPTIONS` requests with
+      an `Allow` header containing the allowed methods, as well as responding
+      with `405 Method Not Allowed` and `501 Not Implemented` as appropriate.
+    </fn>
+    <fn name="param" example="example/jsdoc/param.js" return="!_goa.Router">
+      <arg string name="param">
+        The name of the param.
+      </arg>
+      <arg type="!_goa.Middleware" name="middleware">
+        The middleware.
+      </arg>
+      Run middleware for named route parameters. Useful for auto-loading or validation.
+    </fn>
+    <fn name="redirect" return="!_goa.Router">
+      <arg string name="source">URL or route name.</arg>
+      <arg string name="destination">URL or route name.</arg>
+      <arg number name="code" opt>The HTTP status code. Default `301`.</arg>
+
+      Redirect `source` to `destination` URL with optional 30x status `code`.
+      Both `source` and `destination` can be route names.
+    </fn>
+    <fn name="route" return="!_goa.Layer">
+      <arg string name="name">
+        The route name.
+      </arg>
+      Lookup route with given `name`.
+    </fn>
+    <fn name="url" example="example/jsdoc/url.js" return="string|!Error">
+      <arg string name="name">
+        The route name.
+      </arg>
+      <arg type="!Object" name="params">
+        The URL parameters.
+      </arg>
+      <arg type="{ query: string|!Object }" name="options" opt>
+        The options.
+      </arg>
+      Generate URL for route. Takes a route name and map of named `params`. If the route is not found, returns an error.
+    </fn>
+    <fn static name="url" return="string" example="example/jsdoc/static-url.js">
+      <arg string name="path">
+        The URL pattern.
+      </arg>
+      <arg type="!Array<!Object>" name="...params">
+        The URL parameters.
+      </arg>
+      Generate URL from url pattern and given `params`.
+    </fn>
+    <fn name="use" return="!_goa.Router" example="example/jsdoc/use.js">
+      <arg type="string|!Array<string>|!_goa.Middleware" name="path">
+        The path or an array of paths. Pass middleware without path to apply to `*`.
+      </arg>
+      <arg type="!Array<!_goa.Middleware>" name="...middleware">
+        The middleware to use.
+      </arg>
+      Use given middleware.
+
+      Middleware run in the order they are defined by `.use()`. They are invoked
+      sequentially, requests start at the first middleware and work their way
+      "down" the middleware stack.
+    </fn>
+    <fn name="prefix" return="!_goa.Router" example="example/jsdoc/prefix.js">
+      <arg string name="prefix">The prefix to set.</arg>
+      Set the path prefix for a Router instance that was already initialized.
+    </fn>
+    <fn name="middleware" alias="routes" return="!_goa.Middleware">
+      Returns router middleware which dispatches a route matching the request.
+    </fn>
+  </interface>
+
+  <type record name="AllowedMethodsOptions">
+    <prop boolean name="throw">
+      Throw error instead of setting status and header.
+    </prop>
+    <prop type="!Function" name="notImplemented">
+      Throw the returned value in place of the default `NotImplemented` error.
+    </prop>
+    <prop type="!Function" name="methodNotAllowed">
+      Throw the returned value in place of the default `MethodNotAllowed` error.
+    </prop>
+  </type>
+
+  <type record name="RouterConfig" desc="Config for the router.">
+    <prop type="!Array<string>" name="methods" opt>
+      The methods to serve.
+      Default `HEAD`, `OPTIONS`, `GET`, `PUT`, `PATCH`, `POST`, `DELETE`.
+    </prop>
+    <prop string name="prefix" opt>
+      Prefix router paths.
+    </prop>
+    <prop string name="routerPath" opt>
+      Custom routing path.
+    </prop>
+  </type>
+</types>

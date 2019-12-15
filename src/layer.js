@@ -13,12 +13,15 @@ export default class Layer {
    *
    * @param {string|!RegExp} path Path string or regular expression.
    * @param {!Array<string>} methods Array of HTTP verbs.
-   * @param {!Array<!_goa.Middleware>} middleware Layer callback/middleware or series of.
+   * @param {!_goa.Middleware|!Array<!_goa.Middleware>} middleware Layer callback/middleware or series of.
    * @param {!_goa.LayerConfig} [opts] The options.
    */
   constructor(path, methods, middleware, opts = {}) {
     const { name = null } = opts
     this.opts = opts
+    /**
+     * @type {string|null}
+     */
     this.name = name
     /**
      * @type {!Array<string>}
@@ -113,8 +116,8 @@ export default class Layer {
     const tokens = parse(url)
     let replace = {}
 
-    if (args instanceof Array) {
-      for (var len = tokens.length, i=0, j=0; i<len; i++) {
+    if (Array.isArray(args)) {
+      for (let len = tokens.length, i=0, j=0; i<len; i++) {
         if (tokens[i].name) replace[tokens[i].name] = args[j++]
       }
     } else if (tokens.some(token => token.name)) {

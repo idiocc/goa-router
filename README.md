@@ -13,6 +13,7 @@ yarn add @goa/router
 - [Table Of Contents](#table-of-contents)
 - [API](#api)
   * [`Router`](#type-router)
+  * [`AllowedMethodsOptions`](#type-allowedmethodsoptions)
   * [`RouterConfig`](#type-routerconfig)
 - [Copyright & License](#copyright--license)
 
@@ -32,7 +33,7 @@ import router from '@goa/router'
   <img src="/.documentary/section-breaks/1.svg?sanitize=true">
 </a></p>
 
-__<a name="type-router">`Router`</a>__
+__<a name="type-router">`Router`</a>__: Create a new router.
 <table>
  <thead><tr>
   <th>Name</th>
@@ -40,7 +41,7 @@ __<a name="type-router">`Router`</a>__
  </tr></thead>
  <tr>
   <td rowSpan="3" align="center"><ins>constructor</ins></td>
-  <td><em>new (opts?: <a href="#type-routerconfig" title="Config for the router.">!RouterConfig</a>) => <a href="#type-router">Router</a></em></td>
+  <td><em>new (opts?: <a href="#type-routerconfig" title="Config for the router.">!RouterConfig</a>) => <a href="#type-router" title="Create a new router.">Router</a></em></td>
  </tr>
  <tr></tr>
  <tr>
@@ -50,22 +51,17 @@ __<a name="type-router">`Router`</a>__
  </tr>
  <tr>
   <td rowSpan="3" align="center"><kbd>static</kbd> <ins>url</ins></td>
-  <td><em>(path: string, args: !Array&lt;!Object&gt;) => string</em></td>
+  <td><em>(path: string, ...params: !Array&lt;!Object&gt;[]) => string</em></td>
  </tr>
  <tr></tr>
  <tr>
   <td>
    Generate URL from url pattern and given <code>params</code>.
-
-```javascript
-const url = Router.url('/users/:id', {id: 1});
-// => "/users/1"
-```
   </td>
  </tr>
  <tr>
   <td rowSpan="3" align="center"><ins>allowedMethods</ins></td>
-  <td><em>(options: !AllowedMethodsOptions) => <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a></em></td>
+  <td><em>(options: <a href="#type-allowedmethodsoptions">!AllowedMethodsOptions</a>) => !Middleware</em></td>
  </tr>
  <tr></tr>
  <tr>
@@ -73,96 +69,124 @@ const url = Router.url('/users/:id', {id: 1});
    Returns separate middleware for responding to <code>OPTIONS</code> requests with
    an <code>Allow</code> header containing the allowed methods, as well as responding
    with <code>405 Method Not Allowed</code> and <code>501 Not Implemented</code> as appropriate.
-
-```javascript
-import Goa from '＠goa/koa'
-import Router from '＠goa/router'
-
-const app = new Goa()
-const router = new Router()
-
-app.use(router.routes());
-app.use(router.allowedMethods());
-```
-
-   <strong>Example with <a href="https://github.com/hapijs/boom">Boom</a></strong>
-
-```javascript
-import Goa from '＠goa/koa'
-import Router from '＠goa/router'
-import Boom from 'boom'
-
-const app = new Goa()
-const router = new Router()
-
-app.use(router.routes())
-app.use(router.allowedMethods({
-  throw: true,
-  notImplemented: () => new Boom.notImplemented(),
-  methodNotAllowed: () => new Boom.methodNotAllowed()
-}))
-```
   </td>
  </tr>
  <tr>
   <td rowSpan="3" align="center"><ins>param</ins></td>
-  <td><em>(param: string, middleware: <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a>) => ?</em></td>
+  <td><em>(param: string, middleware: !Middleware) => <a href="#type-router" title="Create a new router.">!Router</a></em></td>
  </tr>
  <tr></tr>
  <tr>
   <td>
    Run middleware for named route parameters. Useful for auto-loading or validation.
-
-```js
-router
-  .param('user', (id, ctx, next) => {
-    ctx.user = users[id];
-    if (!ctx.user) return ctx.status = 404;
-    return next();
-  })
-  .get('/users/:user', ctx => {
-    ctx.body = ctx.user;
-  })
-  .get('/users/:user/friends', ctx => {
-    return ctx.user.getFriends().then(function(friends) {
-      ctx.body = friends;
-    });
-  })
-  // /users/3 => {"id": 3, "name": "Alex"}
-  // /users/3/friends => [{"id": 4, "name": "TJ"}]
-```
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center"><ins>redirect</ins></td>
+  <td><em>(source: string, destination: string, code?: number) => <a href="#type-router" title="Create a new router.">!Router</a></em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Redirect <code>source</code> to <code>destination</code> URL with optional 30x status <code>code</code>.
+   Both <code>source</code> and <code>destination</code> can be route names.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center"><ins>route</ins></td>
+  <td><em>(name: string) => !Layer</em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Lookup route with given <code>name</code>.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center"><ins>url</ins></td>
+  <td><em>(name: string, params: !Object, options?: { query: (string | !Object) }) => (string | !Error)</em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Generate URL for route. Takes a route name and map of named <code>params</code>. If the route is not found, returns an error.
   </td>
  </tr>
  <tr>
   <td rowSpan="3" align="center"><ins>use</ins></td>
-  <td><em>(path: (string | !Array&lt;string&gt; | <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a>), ...middleware: <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a>[]) => ?</em></td>
+  <td><em>(path: (string | !Array&lt;string&gt; | !Middleware), ...middleware: !Array&lt;!Middleware&gt;[]) => <a href="#type-router" title="Create a new router.">!Router</a></em></td>
  </tr>
  <tr></tr>
  <tr>
   <td>
    Use given middleware.
-
+   
    Middleware run in the order they are defined by <code>.use()</code>. They are invoked
    sequentially, requests start at the first middleware and work their way
    "down" the middleware stack.
-
-```javascript
-// session middleware will run before authorize
-router
-  .use(session())
-  .use(authorize())
-
-// use middleware only with given path
-router.use('/users', userAuth())
-
-// or with an array of paths
-router.use(['/users', '/admin'], userAuth())
-
-app.use(router.routes())
-```
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center"><ins>prefix</ins></td>
+  <td><em>(prefix: string) => <a href="#type-router" title="Create a new router.">!Router</a></em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Set the path prefix for a Router instance that was already initialized.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center"><ins>middleware</ins><br><ins>routes*</ins></td>
+  <td><em>() => !Middleware</em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Returns router middleware which dispatches a route matching the request.
   </td>
  </tr>
 </table>
+
+
+__<a name="type-allowedmethodsoptions">`AllowedMethodsOptions`</a>__
+<table>
+ <thead><tr>
+  <th>Name</th>
+  <th>Type &amp; Description</th>
+ </tr></thead>
+ <tr>
+  <td rowSpan="3" align="center"><strong>throw*</strong></td>
+  <td><em>boolean</em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Throw error instead of setting status and header.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center"><strong>notImplemented*</strong></td>
+  <td><em>!Function</em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Throw the returned value in place of the default <code>NotImplemented</code> error.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center"><strong>methodNotAllowed*</strong></td>
+  <td><em>!Function</em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Throw the returned value in place of the default <code>MethodNotAllowed</code> error.
+  </td>
+ </tr>
+</table>
+
 
 __<a name="type-routerconfig">`RouterConfig`</a>__: Config for the router.
 <table>

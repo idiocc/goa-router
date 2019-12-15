@@ -39,6 +39,7 @@ export default class Router {
     this.stack = []
   }
   /**
+   * Returns the middleware with allowed methods.
    * @param {_goa.AllowedMethodsOptions} options
    */
   allowedMethods(options = {}) {
@@ -47,9 +48,10 @@ export default class Router {
     /** @type {!_goa.Middleware} */
     const mw = async (ctx, next) => {
       await next()
-      var allowed = {}
+      const allowed = {}
+      const { status = 404 } = ctx
 
-      if (!ctx.status || ctx.status == 404) {
+      if (status == 404) {
         ctx.matched.forEach((route) => {
           route.methods.forEach((method) => {
             allowed[method] = method
@@ -99,13 +101,12 @@ export default class Router {
   /**
    * Register route with all methods.
    *
-   * @param {String} name Optional.
-   * @param {String} path
-   * @param {Function=} middleware You may also pass multiple middleware.
-   * @param {Function} callback
+   * @param {string} name Optional.
+   * @param {string|!RegExp|!_goa.Middleware} path
+   * @param {!Array<!_goa.Middleware>} middleware You may also pass multiple middleware.
    * @private
    */
-  all(name, path, middleware) {
+  all(name, path, ...middleware) {
     let mw
 
     if (typeof path == 'string' || path instanceof RegExp) {
@@ -116,51 +117,33 @@ export default class Router {
       name = null
     }
 
-    this.register(path, methods, mw, {
-      name: name,
-    })
+    this.register(path, methods, mw, { name })
 
     return this
   }
 
   /**
    * Redirect `source` to `destination` URL with optional 30x status `code`.
-   *
    * Both `source` and `destination` can be route names.
    *
-   * ```javascript
-   * router.redirect('/login', 'sign-in');
-   * ```
-   *
-   * This is equivalent to:
-   *
-   * ```javascript
-   * router.all('/login', ctx => {
-   *   ctx.redirect('/sign-in');
-   *   ctx.status = 301;
-   * });
-   * ```
-   *
-   * @param {String} source URL or route name.
-   * @param {String} destination URL or route name.
-   * @param {Number=} code HTTP status code (default: 301).
-   * @returns {Router}
+   * @param {string} source URL or route name.
+   * @param {string} destination URL or route name.
+   * @param {number} [code] HTTP status code (default: 301).
    */
-
-  redirect(source, destination, code) {
+  redirect(source, destination, code = 301) {
     // lookup source route by name
-    if (source[0] !== '/') {
+    if (source[0] != '/') {
       source = this.url(source)
     }
 
     // lookup destination route by name
-    if (destination[0] !== '/') {
+    if (destination[0] != '/') {
       destination = this.url(destination)
     }
 
     return this.all(source, ctx => {
       ctx.redirect(destination)
-      ctx.status = code || 301
+      ctx.status = code
     })
   }
 
@@ -169,7 +152,8 @@ export default class Router {
    *
    * @param {string|!Array<string>} path The path string or an array of paths.
    * @param {!Array<string>} methods Array of HTTP verbs.
-   * @param {!_goa.Middleware} middleware Multiple middleware also accepted.
+   * @param {!_goa.Middleware|!Array<!_goa.Middleware>} middleware Multiple middleware also accepted.
+   * @param {!Object} [opts]
    * @private
    */
   register(path, methods, middleware, opts = {}) {
@@ -212,16 +196,13 @@ export default class Router {
 
   /**
    * Lookup route with given `name`.
-   *
-   * @param {String} name
-   * @returns {Layer|false}
+   * @param {string} name
    */
-
   route(name) {
     const routes = this.stack
 
     for (let len = routes.length, i=0; i<len; i++) {
-      if (routes[i].name && routes[i].name === name) {
+      if (routes[i].name && routes[i].name == name) {
         return routes[i]
       }
     }
@@ -231,43 +212,16 @@ export default class Router {
 
   /**
    * Generate URL for route. Takes a route name and map of named `params`.
-   *
-   * @example
-   *
-   * ```javascript
-   * router.get('user', '/users/:id', (ctx, next) => {
-   *   // ...
-   * });
-   *
-   * router.url('user', 3);
-   * // => "/users/3"
-   *
-   * router.url('user', { id: 3 });
-   * // => "/users/3"
-   *
-   * router.use((ctx, next) => {
-   *   // redirect to named route
-   *   ctx.redirect(ctx.router.url('sign-in'));
-   * })
-   *
-   * router.url('user', { id: 3 }, { query: { limit: 1 } });
-   * // => "/users/3?limit=1"
-   *
-   * router.url('user', { id: 3 }, { query: "limit=1" });
-   * // => "/users/3?limit=1"
-   * ```
-   *
-   * @param {String} name route name
+   * @param {string} name route name
    * @param {Object} params url parameters
    * @param {Object} [options] options parameter
-   * @param {Object|String} [options.query] query options
+   * @param {Object|string} [options.query] query options
    */
   url(name, ...params) {
     const route = this.route(name)
 
-    if (route) {
-      return route.url.apply(route, ...params)
-    }
+    if (route)
+      return route.url(...params)
 
     return new Error(`No route found for name: ${name}`)
   }
@@ -312,7 +266,6 @@ export default class Router {
   /**
    * Run middleware for named route parameters. Useful for auto-loading or
    * validation.
-   *
    * @param {string} param
    * @param {!_goa.Middleware} middleware
    */
@@ -326,30 +279,15 @@ export default class Router {
 
   /**
    * Generate URL from url pattern and given `params`.
-   *
-   * @example
-   *
-   * ```javascript
-   * const url = Router.url('/users/:id', {id: 1});
-   * // => "/users/1"
-   * ```
-   *
-   * @param {string} path url pattern
-   * @param {Array<!Object>} args url parameters
+   * @param {string} path Url pattern.
+   * @param {!Array<!Object>} params Url parameters.
    */
-  static url(path, ...args) {
-    return Layer.prototype.url.apply({ path }, ...args)
+  static url(path, ...params) {
+    return Layer.prototype.url.apply({ path }, params)
   }
   /**
    * Set the path prefix for a Router instance that was already initialized.
-   *
-   * @example
-   *
-   * ```javascript
-   * router.prefix('/things/:thing_id')
-   * ```
-   *
-   * @param {string} prefix
+   * @param {string} prefix The prefix to set.
    */
   prefix(prefix) {
     prefix = prefix.replace(/\/$/, '')
@@ -368,23 +306,6 @@ export default class Router {
    * Middleware run in the order they are defined by `.use()`. They are invoked
    * sequentially, requests start at the first middleware and work their way
    * "down" the middleware stack.
-   *
-   * @example
-   *
-   * ```javascript
-   * // session middleware will run before authorize
-   * router
-   *   .use(session())
-   *   .use(authorize());
-   *
-   * // use middleware only with given path
-   * router.use('/users', userAuth());
-   *
-   * // or with an array of paths
-   * router.use(['/users', '/admin'], userAuth());
-   *
-   * app.use(router.routes());
-   * ```
    *
    * @param {string|!Array<string>|!_goa.Middleware} path
    * @param {!Array<!_goa.Middleware>} middleware
