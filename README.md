@@ -46,7 +46,23 @@ __<a name="type-router">`Router`</a>__: Create a new router.
  <tr></tr>
  <tr>
   <td>
-   Constructor method.
+
+Constructor method.
+```js
+import Goa from '＠goa/koa'
+import Router from '＠goa/router'
+
+const app = new Goa()
+const router = new Router()
+
+router.get('/', (ctx, next) => {
+  // ctx.router available
+})
+
+app
+  .use(router.routes())
+  .use(router.allowedMethods())
+```
   </td>
  </tr>
  <tr>
@@ -56,7 +72,12 @@ __<a name="type-router">`Router`</a>__: Create a new router.
  <tr></tr>
  <tr>
   <td>
-   Generate URL from url pattern and given <code>params</code>.
+
+Generate URL from url pattern and given `params`.
+```js
+const url = Router.url('/users/:id', { id: 1 })
+// => "/users/1"
+```
   </td>
  </tr>
  <tr>
@@ -66,9 +87,36 @@ __<a name="type-router">`Router`</a>__: Create a new router.
  <tr></tr>
  <tr>
   <td>
-   Returns separate middleware for responding to <code>OPTIONS</code> requests with
-   an <code>Allow</code> header containing the allowed methods, as well as responding
-   with <code>405 Method Not Allowed</code> and <code>501 Not Implemented</code> as appropriate.
+
+Returns separate middleware for responding to `OPTIONS` requests with
+an `Allow` header containing the allowed methods, as well as responding
+with `405 Method Not Allowed` and `501 Not Implemented` as appropriate.
+```js
+import Goa from '＠goa/koa'
+import Router from '＠goa/router'
+
+const app = new Goa()
+const router = new Router()
+
+app.use(router.routes())
+app.use(router.allowedMethods())
+```
+**Example with [Boom](https://github.com/hapijs/boom)**
+```js
+import Goa from '＠goa/koa'
+import Router from '＠goa/router'
+import Boom from 'boom'
+
+const app = new Goa()
+const router = new Router()
+
+app.use(router.routes())
+app.use(router.allowedMethods({
+  throw: true,
+  notImplemented: () => new Boom.notImplemented(),
+  methodNotAllowed: () => new Boom.methodNotAllowed(),
+}))
+```
   </td>
  </tr>
  <tr>
@@ -78,7 +126,22 @@ __<a name="type-router">`Router`</a>__: Create a new router.
  <tr></tr>
  <tr>
   <td>
-   Run middleware for named route parameters. Useful for auto-loading or validation.
+
+Run middleware for named route parameters. Useful for auto-loading or validation.
+```js
+router
+  .param('user', (id, ctx, next) => {
+    ctx.user = users[id]
+    if (!ctx.user) return ctx.status = 404
+    return next()
+  })
+  .get('/users/:user', ctx => {
+    ctx.body = ctx.user
+  })
+  .get('/users/:user/friends', async ctx => {
+    ctx.body = await ctx.user.getFriends()
+  })
+```
   </td>
  </tr>
  <tr>
@@ -109,7 +172,30 @@ __<a name="type-router">`Router`</a>__: Create a new router.
  <tr></tr>
  <tr>
   <td>
-   Generate URL for route. Takes a route name and map of named <code>params</code>. If the route is not found, returns an error.
+
+Generate URL for route. Takes a route name and map of named `params`. If the route is not found, returns an error.
+```js
+router.get('user', '/users/:id', (ctx, next) => {
+  // ...
+})
+
+router.url('user', 3)
+// => "/users/3"
+
+router.url('user', { id: 3 })
+// => "/users/3"
+
+router.use((ctx, next) => {
+  // redirect to named route
+  ctx.redirect(ctx.router.url('sign-in'))
+})
+
+router.url('user', { id: 3 }, { query: { limit: 1 } })
+// => "/users/3?limit=1"
+
+router.url('user', { id: 3 }, { query: 'limit=1' })
+// => "/users/3?limit=1"
+```
   </td>
  </tr>
  <tr>
@@ -119,10 +205,22 @@ __<a name="type-router">`Router`</a>__: Create a new router.
  <tr></tr>
  <tr>
   <td>
-   Use given middleware.
-   Middleware run in the order they are defined by <code>.use()</code>. They are invoked
-   sequentially, requests start at the first middleware and work their way
-   "down" the middleware stack.
+
+Use given middleware.
+Middleware run in the order they are defined by `.use()`. They are invoked
+sequentially, requests start at the first middleware and work their way
+"down" the middleware stack.
+```js
+// session middleware will run before authorize
+router
+  .use(session())
+  .use(authorize())
+// use middleware only with given path
+router.use('/users', userAuth())
+// or with an array of paths
+router.use(['/users', '/admin'], userAuth())
+app.use(router.routes())
+```
   </td>
  </tr>
  <tr>
@@ -132,7 +230,11 @@ __<a name="type-router">`Router`</a>__: Create a new router.
  <tr></tr>
  <tr>
   <td>
-   Set the path prefix for a Router instance that was already initialized.
+
+Set the path prefix for a Router instance that was already initialized.
+```js
+router.prefix('/things/:thing_id')
+```
   </td>
  </tr>
  <tr>

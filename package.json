@@ -56,7 +56,7 @@
     "erte": "^1.2.0",
     "eslint-config-artdeco": "1.0.1",
     "rqt": "^4.0.0",
-    "typal": "^1.23.1",
+    "typal": "^1.23.2",
     "yarn-s": "1.2.1",
     "zoroaster": "^4.1.2"
   },
