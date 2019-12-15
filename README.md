@@ -61,7 +61,7 @@ __<a name="type-router">`Router`</a>__: Create a new router.
  </tr>
  <tr>
   <td rowSpan="3" align="center"><ins>allowedMethods</ins></td>
-  <td><em>(options: <a href="#type-allowedmethodsoptions">!AllowedMethodsOptions</a>) => !Middleware</em></td>
+  <td><em>(options: <a href="#type-allowedmethodsoptions">!AllowedMethodsOptions</a>) => <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a></em></td>
  </tr>
  <tr></tr>
  <tr>
@@ -73,7 +73,7 @@ __<a name="type-router">`Router`</a>__: Create a new router.
  </tr>
  <tr>
   <td rowSpan="3" align="center"><ins>param</ins></td>
-  <td><em>(param: string, middleware: !Middleware) => <a href="#type-router" title="Create a new router.">!Router</a></em></td>
+  <td><em>(param: string, middleware: <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a>) => <a href="#type-router" title="Create a new router.">!Router</a></em></td>
  </tr>
  <tr></tr>
  <tr>
@@ -114,13 +114,12 @@ __<a name="type-router">`Router`</a>__: Create a new router.
  </tr>
  <tr>
   <td rowSpan="3" align="center"><ins>use</ins></td>
-  <td><em>(path: (string | !Array&lt;string&gt; | !Middleware), ...middleware: !Array&lt;!Middleware&gt;[]) => <a href="#type-router" title="Create a new router.">!Router</a></em></td>
+  <td><em>(path: (string | !Array&lt;string&gt; | <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a>), ...middleware: !Array&lt;<a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a>&gt;[]) => <a href="#type-router" title="Create a new router.">!Router</a></em></td>
  </tr>
  <tr></tr>
  <tr>
   <td>
    Use given middleware.
-   
    Middleware run in the order they are defined by <code>.use()</code>. They are invoked
    sequentially, requests start at the first middleware and work their way
    "down" the middleware stack.
@@ -138,7 +137,7 @@ __<a name="type-router">`Router`</a>__: Create a new router.
  </tr>
  <tr>
   <td rowSpan="3" align="center"><ins>middleware</ins><br><ins>routes*</ins></td>
-  <td><em>() => !Middleware</em></td>
+  <td><em>() => <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a></em></td>
  </tr>
  <tr></tr>
  <tr>

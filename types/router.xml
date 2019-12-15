@@ -1,4 +1,6 @@
 <types ns="_goa">
+  <import name="Middleware" from="@typedefs/goa" ns="_goa" link="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid" />
+
   <interface name="Router" desc="Create a new router."
     example="example/jsdoc/constructor.js"
     example-override="../../src => @goa/router">
@@ -63,7 +65,6 @@
         The middleware to use.
       </arg>
       Use given middleware.
-
       Middleware run in the order they are defined by `.use()`. They are invoked
       sequentially, requests start at the first middleware and work their way
       "down" the middleware stack.
