@@ -33,7 +33,7 @@ import router from '@goa/router'
   <img src="/.documentary/section-breaks/1.svg?sanitize=true">
 </a></p>
 
-__<a name="type-router">`Router`</a>__: Create a new router.
+__<a name="type-router">`Router`</a>__: Router For Goa Apps.
 <table>
  <thead><tr>
   <th>Name</th>
@@ -41,13 +41,13 @@ __<a name="type-router">`Router`</a>__: Create a new router.
  </tr></thead>
  <tr>
   <td rowSpan="3" align="center"><ins>constructor</ins></td>
-  <td><em>new (opts?: <a href="#type-routerconfig" title="Config for the router.">!RouterConfig</a>) => <a href="#type-router" title="Create a new router.">Router</a></em></td>
+  <td><em>new (opts?: <a href="#type-routerconfig" title="Config for the router.">!RouterConfig</a>) => <a href="#type-router" title="Router For Goa Apps.">Router</a></em></td>
  </tr>
  <tr></tr>
  <tr>
   <td>
 
-Constructor method.
+Create a new router.
 ```js
 import Goa from '＠goa/koa'
 import Router from '＠goa/router'
@@ -67,7 +67,7 @@ app
  </tr>
  <tr>
   <td rowSpan="3" align="center"><kbd>static</kbd> <ins>url</ins></td>
-  <td><em>(path: string, ...params: !Array&lt;!Object&gt;[]) => string</em></td>
+  <td><em>(path: string, ...params: !Object[]) => string</em></td>
  </tr>
  <tr></tr>
  <tr>
@@ -121,7 +121,7 @@ app.use(router.allowedMethods({
  </tr>
  <tr>
   <td rowSpan="3" align="center"><ins>param</ins></td>
-  <td><em>(param: string, middleware: <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a>) => <a href="#type-router" title="Create a new router.">!Router</a></em></td>
+  <td><em>(param: string, middleware: <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a>) => <a href="#type-router" title="Router For Goa Apps.">!Router</a></em></td>
  </tr>
  <tr></tr>
  <tr>
@@ -146,7 +146,7 @@ router
  </tr>
  <tr>
   <td rowSpan="3" align="center"><ins>redirect</ins></td>
-  <td><em>(source: string, destination: string, code?: number) => <a href="#type-router" title="Create a new router.">!Router</a></em></td>
+  <td><em>(source: string, destination: string, code?: number) => <a href="#type-router" title="Router For Goa Apps.">!Router</a></em></td>
  </tr>
  <tr></tr>
  <tr>
@@ -200,7 +200,7 @@ router.url('user', { id: 3 }, { query: 'limit=1' })
  </tr>
  <tr>
   <td rowSpan="3" align="center"><ins>use</ins></td>
-  <td><em>(path: (string | !Array&lt;string&gt; | <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a>), ...middleware: !Array&lt;<a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a>&gt;[]) => <a href="#type-router" title="Create a new router.">!Router</a></em></td>
+  <td><em>(path: (string | !Array&lt;string&gt; | <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a>), ...middleware: <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a>[]) => <a href="#type-router" title="Router For Goa Apps.">!Router</a></em></td>
  </tr>
  <tr></tr>
  <tr>
@@ -225,7 +225,7 @@ app.use(router.routes())
  </tr>
  <tr>
   <td rowSpan="3" align="center"><ins>prefix</ins></td>
-  <td><em>(prefix: string) => <a href="#type-router" title="Create a new router.">!Router</a></em></td>
+  <td><em>(prefix: string) => <a href="#type-router" title="Router For Goa Apps.">!Router</a></em></td>
  </tr>
  <tr></tr>
  <tr>

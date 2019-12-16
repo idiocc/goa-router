@@ -1,12 +1,14 @@
 <types ns="_goa">
   <import name="Middleware" from="@typedefs/goa" ns="_goa" link="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid" />
 
-  <interface name="Router" desc="Create a new router."
-    example="example/jsdoc/constructor.js"
+  <interface name="Router" desc="Router For Goa Apps.">
+    <fn name="constructor" example="example/jsdoc/constructor.js"
     example-override="../../src => @goa/router">
-    <arg type="!_goa.RouterConfig" name="opts" opt>
-      The options for the router.
-    </arg>
+      <arg type="!_goa.RouterConfig" name="opts" opt>
+        The options for the router.
+      </arg>
+      Create a new router.
+    </fn>
     <fn name="allowedMethods" return="!_goa.Middleware" example="example/jsdoc/allowed-methods.js, example/jsdoc/allowed-methods-boom.js" example-override="../../src => @goa/router" return="!_goa.Middleware">
       <arg type="!_goa.AllowedMethodsOptions" name="options">The options.</arg>
       Returns separate middleware for responding to `OPTIONS` requests with
@@ -52,7 +54,7 @@
       <arg string name="path">
         The URL pattern.
       </arg>
-      <arg type="!Array<!Object>" name="...params">
+      <arg type="!Object" name="...params">
         The URL parameters.
       </arg>
       Generate URL from url pattern and given `params`.
@@ -61,7 +63,7 @@
       <arg type="string|!Array<string>|!_goa.Middleware" name="path">
         The path or an array of paths. Pass middleware without path to apply to `*`.
       </arg>
-      <arg type="!Array<!_goa.Middleware>" name="...middleware">
+      <arg type="!_goa.Middleware" name="...middleware">
         The middleware to use.
       </arg>
       Use given middleware.
