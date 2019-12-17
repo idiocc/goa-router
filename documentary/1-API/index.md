@@ -10,10 +10,24 @@ import Router from '@goa/router'
 
 <!-- <typedef method="router">types/api.xml</typedef> -->
 
-<typedef narrow slimFunctions>types/router.xml</typedef>
+The example below creates a really simple router that responds only to the `GET /` request.
+
+<table>
+<tr><th><a href="example/index.js">Example</a></th><th>Output</th></tr>
+<!-- block-start -->
+<tr><td>
 
 %EXAMPLE: example, ../src => @goa/router%
+</td>
+<td>
+
 %FORK example%
+</td></tr>
+</table>
+
+%~%
+
+<typedef narrow slimFunctions>types/router.xml</typedef>
 
 %~%
 

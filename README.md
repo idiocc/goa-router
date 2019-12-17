@@ -39,6 +39,44 @@ import Router from '@goa/router'
   <img src="/.documentary/section-breaks/1.svg?sanitize=true">
 </a></p>
 
+The example below creates a really simple router that responds only to the `GET /` request.
+
+<table>
+<tr><th><a href="example/index.js">Example</a></th><th>Output</th></tr>
+<tr><td>
+
+```js
+import rqt from 'rqt'
+import Goa from '@goa/koa'
+import Router from '@goa/router'
+
+const goa = new Goa()
+const router = new Router()
+router.get('/', (ctx, next) => {
+  ctx.body = 'hello world'
+})
+goa.use(router.routes())
+
+goa.listen(async function() {
+  const url = `http://localhost:${this.address().port}`
+  const res = await rqt(`${url}/`)
+  console.log(res)
+  this.close()
+})
+```
+</td>
+<td>
+
+```
+hello world
+```
+</td></tr>
+</table>
+
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/2.svg?sanitize=true">
+</a></p>
+
 __<a name="type-router">`Router`</a>__: Router For Goa Apps.
 <table>
  <thead><tr>
@@ -354,31 +392,8 @@ __<a name="type-routerconfig">`RouterConfig`</a>__: Config for the router.
  </tr>
 </table>
 
-```js
-import rqt from 'rqt'
-import Goa from '@goa/koa'
-import Router from '@goa/router'
-
-const goa = new Goa()
-const router = new Router()
-router.get('/', (ctx, next) => {
-  ctx.body = 'hello world'
-})
-goa.use(router.routes())
-
-goa.listen(async function() {
-  const url = `http://localhost:${this.address().port}`
-  const res = await rqt(`${url}/`)
-  console.log(res)
-  this.close()
-})
-```
-```
-hello world
-```
-
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/2.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/3.svg?sanitize=true">
 </a></p>
 
 ## Verbs
@@ -413,7 +428,7 @@ Route paths will be translated to regular expressions using [path-to-regexp](htt
 Query strings will not be considered when matching requests.
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/3.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/4.svg?sanitize=true">
 </a></p>
 
 ## Named Routes
@@ -430,7 +445,7 @@ router.url('user', 3)
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/4.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/5.svg?sanitize=true">
 </a></p>
 
 ## Multiple Middleware
@@ -453,7 +468,7 @@ router.get(
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/5.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/6.svg?sanitize=true">
 </a></p>
 
 
@@ -484,7 +499,7 @@ goa.use(forums.routes())
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/6.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/7.svg?sanitize=true">
 </a></p>
 
 ## Router Prefixes
@@ -515,7 +530,7 @@ goa.use(router.routes())
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/7.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/8.svg?sanitize=true">
 </a></p>
 
 ## URL Parameters
@@ -538,7 +553,7 @@ goa.use(router.routes())
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/8.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/9.svg?sanitize=true">
 </a></p>
 
 ## Copyright & License
