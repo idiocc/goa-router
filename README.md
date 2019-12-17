@@ -13,9 +13,10 @@ yarn add @goa/router
 - [Table Of Contents](#table-of-contents)
 - [API](#api)
   * [`Router`](#type-router)
-  * [`AllowedMethodsOptions`](#type-allowedmethodsoptions)
   * [`RouterConfig`](#type-routerconfig)
 - [Verbs](#verbs)
+- [Allowed Methods](#allowed-methods)
+  * [`AllowedMethodsOptions`](#type-allowedmethodsoptions)
 - [Named Routes](#named-routes)
 - [Multiple Middleware](#multiple-middleware)
 - [Nested Routes](#nested-routes)
@@ -166,22 +167,6 @@ const router = new Router()
 app.use(router.routes())
 app.use(router.allowedMethods())
 ```
-**Example with [Boom](https://github.com/hapijs/boom)**
-```js
-import Goa from '＠goa/koa'
-import Router from '＠goa/router'
-import Boom from 'boom'
-
-const app = new Goa()
-const router = new Router()
-
-app.use(router.routes())
-app.use(router.allowedMethods({
-  throw: true,
-  notImplemented: () => new Boom.notImplemented(),
-  methodNotAllowed: () => new Boom.methodNotAllowed(),
-}))
-```
   </td>
  </tr>
  <tr>
@@ -221,12 +206,12 @@ router
  </tr>
  <tr>
   <td rowSpan="3" align="center"><ins>route</ins></td>
-  <td><em>(name: string) => !Layer</em></td>
+  <td><em>(name: string) => Layer</em></td>
  </tr>
  <tr></tr>
  <tr>
   <td>
-   Lookup route with given <code>name</code>.
+   Lookup route with given <code>name</code>. If the route is not found, returns <code>null</code>.
   </td>
  </tr>
  <tr>
@@ -322,85 +307,14 @@ router.prefix('/things/:thing_id')
   </td>
  </tr>
 </table>
-
-
-__<a name="type-allowedmethodsoptions">`AllowedMethodsOptions`</a>__: The options for the `allowedMethods` middleware generation.
-<table>
- <thead><tr>
-  <th>Name</th>
-  <th>Type &amp; Description</th>
- </tr></thead>
- <tr>
-  <td rowSpan="3" align="center">throw</td>
-  <td><em>boolean</em></td>
- </tr>
- <tr></tr>
- <tr>
-  <td>
-   Throw error instead of setting status and header.
-  </td>
- </tr>
- <tr>
-  <td rowSpan="3" align="center">notImplemented</td>
-  <td><em>() => !Error</em></td>
- </tr>
- <tr></tr>
- <tr>
-  <td>
-   Throw the returned value in place of the default <code>NotImplemented</code> error.
-  </td>
- </tr>
- <tr>
-  <td rowSpan="3" align="center">methodNotAllowed</td>
-  <td><em>() => !Error</em></td>
- </tr>
- <tr></tr>
- <tr>
-  <td>
-   Throw the returned value in place of the default <code>MethodNotAllowed</code> error.
-  </td>
- </tr>
-</table>
-
-
 __<a name="type-routerconfig">`RouterConfig`</a>__: Config for the router.
-<table>
- <thead><tr>
-  <th>Name</th>
-  <th>Type &amp; Description</th>
- </tr></thead>
- <tr>
-  <td rowSpan="3" align="center">methods</td>
-  <td><em>!Array&lt;string&gt;</em></td>
- </tr>
- <tr></tr>
- <tr>
-  <td>
-   The methods to serve.
-   Default <code>HEAD</code>, <code>OPTIONS</code>, <code>GET</code>, <code>PUT</code>, <code>PATCH</code>, <code>POST</code>, <code>DELETE</code>.
-  </td>
- </tr>
- <tr>
-  <td rowSpan="3" align="center">prefix</td>
-  <td><em>string</em></td>
- </tr>
- <tr></tr>
- <tr>
-  <td>
-   Prefix router paths.
-  </td>
- </tr>
- <tr>
-  <td rowSpan="3" align="center">routerPath</td>
-  <td><em>string</em></td>
- </tr>
- <tr></tr>
- <tr>
-  <td>
-   Custom routing path.
-  </td>
- </tr>
-</table>
+
+
+|    Name    |             Type              |                                          Description                                          |
+| ---------- | ----------------------------- | --------------------------------------------------------------------------------------------- |
+| methods    | <em>!Array&lt;string&gt;</em> | The methods to serve.<br/>Default `HEAD`, `OPTIONS`, `GET`, `PUT`, `PATCH`, `POST`, `DELETE`. |
+| prefix     | <em>string</em>               | Prefix router paths.                                                                          |
+| routerPath | <em>string</em>               | Custom routing path.                                                                          |
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/2.svg?sanitize=true">
@@ -441,6 +355,37 @@ Query strings will not be considered when matching requests.
   <img src="/.documentary/section-breaks/3.svg?sanitize=true">
 </a></p>
 
+## Allowed Methods
+
+The router can respond to the `OPTIONS` request with the `allow` header.
+
+**Example with [Boom](https://github.com/hapijs/boom)**
+
+```js
+const app = new Goa()
+const router = new Router()
+
+app.use(router.routes())
+app.use(router.allowedMethods({
+  throw: true,
+  notImplemented: () => new Boom.notImplemented(),
+  methodNotAllowed: () => new Boom.methodNotAllowed(),
+}))
+```
+
+__<a name="type-allowedmethodsoptions">`AllowedMethodsOptions`</a>__: The options for the `allowedMethods` middleware generation.
+
+
+|       Name       |         Type          |                                Description                                 |
+| ---------------- | --------------------- | -------------------------------------------------------------------------- |
+| throw            | <em>boolean</em>      | Throw error instead of setting status and header.                          |
+| notImplemented   | <em>() => !Error</em> | Throw the returned value in place of the default `NotImplemented` error.   |
+| methodNotAllowed | <em>() => !Error</em> | Throw the returned value in place of the default `MethodNotAllowed` error. |
+
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/4.svg?sanitize=true">
+</a></p>
+
 ## Named Routes
 
 Routes can optionally have names. This allows generation of URLs and easy renaming of URLs during development.
@@ -455,7 +400,7 @@ router.url('user', 3)
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/4.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/5.svg?sanitize=true">
 </a></p>
 
 ## Multiple Middleware
@@ -478,7 +423,7 @@ router.get(
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/5.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/6.svg?sanitize=true">
 </a></p>
 
 
@@ -509,7 +454,7 @@ goa.use(forums.routes())
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/6.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/7.svg?sanitize=true">
 </a></p>
 
 ## Router Prefixes
@@ -540,7 +485,7 @@ goa.use(router.routes())
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/7.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/8.svg?sanitize=true">
 </a></p>
 
 ## URL Parameters
@@ -563,7 +508,7 @@ goa.use(router.routes())
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/8.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/9.svg?sanitize=true">
 </a></p>
 
 ## Copyright & License

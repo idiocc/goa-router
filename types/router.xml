@@ -9,7 +9,7 @@
       </arg>
       Create a new router.
     </fn>
-    <fn name="allowedMethods" return="!_goa.Middleware" example="example/jsdoc/allowed-methods.js, example/jsdoc/allowed-methods-boom.js" example-override="../../src => @goa/router" return="!_goa.Middleware">
+    <fn name="allowedMethods" return="!_goa.Middleware" example="example/jsdoc/allowed-methods.js" example-override="../../src => @goa/router" return="!_goa.Middleware">
       <arg type="!_goa.AllowedMethodsOptions" name="options">The options.</arg>
       Returns separate middleware for responding to `OPTIONS` requests with
       an `Allow` header containing the allowed methods, as well as responding
@@ -31,11 +31,11 @@
       Redirect `source` to `destination` URL with optional 30x status `code`.
       Both `source` and `destination` can be route names.
     </fn>
-    <fn name="route" return="!_goa.Layer">
+    <fn name="route" return="_goa.Layer">
       <arg string name="name">
         The route name.
       </arg>
-      Lookup route with given `name`.
+      Lookup route with given `name`. If the route is not found, returns `null`.
     </fn>
     <fn name="url" example="example/jsdoc/url.js" return="string|!Error">
       <arg string name="name">

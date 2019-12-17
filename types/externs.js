@@ -85,9 +85,9 @@ _goa.Router.prototype.param = function(param, middleware) {}
  */
 _goa.Router.prototype.opts
 /**
- * Lookup route with given `name`.
+ * Lookup route with given `name`. If the route is not found, returns `null`.
  * @param {string} name The route name.
- * @return {!_goa.Layer}
+ * @return {_goa.Layer}
  */
 _goa.Router.prototype.route = function(name) {}
 /**
@@ -124,6 +124,7 @@ _goa.Router.prototype.middleware = function() {}
  */
 _goa.Router.prototype.routes = function() {}
 /**
+ * The options for the `allowedMethods` middleware generation.
  * @record
  */
 _goa.AllowedMethodsOptions
@@ -134,14 +135,14 @@ _goa.AllowedMethodsOptions
 _goa.AllowedMethodsOptions.prototype.throw
 /**
  * Throw the returned value in place of the default `NotImplemented` error.
- * @type {(!Function)|undefined}
+ * @type {(function(): !Error)|undefined}
  */
-_goa.AllowedMethodsOptions.prototype.notImplemented
+_goa.AllowedMethodsOptions.prototype.notImplemented = function() {}
 /**
  * Throw the returned value in place of the default `MethodNotAllowed` error.
- * @type {(!Function)|undefined}
+ * @type {(function(): !Error)|undefined}
  */
-_goa.AllowedMethodsOptions.prototype.methodNotAllowed
+_goa.AllowedMethodsOptions.prototype.methodNotAllowed = function() {}
 /**
  * Config for the router.
  * @record

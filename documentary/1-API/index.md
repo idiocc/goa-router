@@ -23,7 +23,8 @@ The example below creates a really simple router that responds to the `GET /` an
 
 %~%
 
-<typedef narrow slimFunctions>types/router.xml</typedef>
+<typedef narrow slimFunctions name="Router">types/router.xml</typedef>
+<typedef name="RouterConfig">types/router.xml</typedef>
 
 %~%
 
@@ -40,6 +41,18 @@ When a route is matched, its path is available at `ctx._matchedRoute` and if nam
 Route paths will be translated to regular expressions using [path-to-regexp](https://github.com/pillarjs/path-to-regexp).
 
 Query strings will not be considered when matching requests.
+
+%~%
+
+## Allowed Methods
+
+The router can respond to the `OPTIONS` request with the `allow` header.
+
+**Example with [Boom](https://github.com/hapijs/boom)**
+
+%EXAMPLE: example/allowed-methods-boom%
+
+<typedef name="AllowedMethodsOptions">types/router.xml</typedef>
 
 %~%
 

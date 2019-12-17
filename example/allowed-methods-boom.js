@@ -1,8 +1,8 @@
-/// **Example with [Boom](https://github.com/hapijs/boom)**
 import Goa from '@goa/koa'
 import Router from '../../src'
 import Boom from 'boom'
 
+/* start example */
 const app = new Goa()
 const router = new Router()
 
@@ -12,3 +12,4 @@ app.use(router.allowedMethods({
   notImplemented: () => new Boom.notImplemented(),
   methodNotAllowed: () => new Boom.methodNotAllowed(),
 }))
+/* end example */

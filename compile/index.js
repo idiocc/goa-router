@@ -59,10 +59,10 @@ class Router extends _Router {
    * Returns separate middleware for responding to `OPTIONS` requests with
    * an `Allow` header containing the allowed methods, as well as responding
    * with `405 Method Not Allowed` and `501 Not Implemented` as appropriate.
-   * @param {!_goa.AllowedMethodsOptions} options
+   * @param {!_goa.AllowedMethodsOptions} options The options for the `allowedMethods` middleware generation.
    * @param {boolean} [options.throw] Throw error instead of setting status and header.
-   * @param {!Function} [options.notImplemented] Throw the returned value in place of the default `NotImplemented` error.
-   * @param {!Function} [options.methodNotAllowed] Throw the returned value in place of the default `MethodNotAllowed` error.
+   * @param {() => !Error} [options.notImplemented] Throw the returned value in place of the default `NotImplemented` error.
+   * @param {() => !Error} [options.methodNotAllowed] Throw the returned value in place of the default `MethodNotAllowed` error.
    * @return {!_goa.Middleware}
    * @example
    * ```js
@@ -74,22 +74,6 @@ class Router extends _Router {
    *
    * app.use(router.routes())
    * app.use(router.allowedMethods())
-   * ```
-   * **Example with [Boom](https://github.com/hapijs/boom)**
-   * ```js
-   * import Goa from '＠goa/koa'
-   * import Router from '＠goa/router'
-   * import Boom from 'boom'
-   *
-   * const app = new Goa()
-   * const router = new Router()
-   *
-   * app.use(router.routes())
-   * app.use(router.allowedMethods({
-   *   throw: true,
-   *   notImplemented: () => new Boom.notImplemented(),
-   *   methodNotAllowed: () => new Boom.methodNotAllowed(),
-   * }))
    * ```
    */
   allowedMethods(options) {
@@ -119,9 +103,9 @@ class Router extends _Router {
     return super.param(param, middleware)
   }
   /**
-   * Lookup route with given `name`.
+   * Lookup route with given `name`. If the route is not found, returns `null`.
    * @param {string} name The route name.
-   * @return {!_goa.Layer}
+   * @return {_goa.Layer}
    */
   route(name) {
     return super.route(name)
@@ -231,10 +215,10 @@ module.exports = Router
 /* typal types/router.xml ignore:_goa.Router,namespace */
 /**
  * @typedef {import('@typedefs/goa').Middleware} Middleware
- * @typedef {Object} AllowedMethodsOptions `＠record`
+ * @typedef {Object} AllowedMethodsOptions `＠record` The options for the `allowedMethods` middleware generation.
  * @prop {boolean} [throw] Throw error instead of setting status and header.
- * @prop {!Function} [notImplemented] Throw the returned value in place of the default `NotImplemented` error.
- * @prop {!Function} [methodNotAllowed] Throw the returned value in place of the default `MethodNotAllowed` error.
+ * @prop {() => !Error} [notImplemented] Throw the returned value in place of the default `NotImplemented` error.
+ * @prop {() => !Error} [methodNotAllowed] Throw the returned value in place of the default `MethodNotAllowed` error.
  * @typedef {Object} RouterConfig `＠record` Config for the router.
  * @prop {!Array<string>} [methods] The methods to serve.
  * Default `HEAD`, `OPTIONS`, `GET`, `PUT`, `PATCH`, `POST`, `DELETE`.
