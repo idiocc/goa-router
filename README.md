@@ -381,8 +381,8 @@ GNU Affero General Public License v3.0
 
 <table>
   <tr>
-    <td><img src="https://avatars3.githubusercontent.com/u/38815725?v=4&amp;s=100" alt="idiocc"></td>
-    <td>© <a href="https://www.artd.eco">Art Deco™</a> 2019</td>
+    <td><img src="https://avatars2.githubusercontent.com/u/40834161?s=100&amp;v=4" alt="idiocc"></td>
+    <td>© <a href="https://www.idio.cc">Idio</a> 2019</td>
   </tr>
 </table>
 
