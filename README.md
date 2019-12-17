@@ -19,6 +19,8 @@ yarn add @goa/router
 - [Named Routes](#named-routes)
 - [Multiple Middleware](#multiple-middleware)
 - [Nested Routes](#nested-routes)
+- [Router Prefixes](#router-prefixes)
+- [URL Parameters](#url-parameters)
 - [Copyright & License](#copyright--license)
 
 <p align="center"><a href="#table-of-contents">
@@ -483,6 +485,60 @@ goa.use(forums.routes())
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/6.svg?sanitize=true">
+</a></p>
+
+## Router Prefixes
+
+Route paths can be prefixed at the router level.
+
+```js
+const router = new Router({
+  prefix: '/users',
+})
+
+router.get('/', (ctx) => {
+  // responds to "/users"
+  ctx.body = ctx.params
+})
+router.get('/:id', (ctx) => {
+  // responds to "/users/:id"
+  ctx.body = ctx.params
+})
+
+goa.use(router.routes())
+```
+```js
+// Request /users
+{}
+// Request /users/123
+{ id: '123' }
+```
+
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/7.svg?sanitize=true">
+</a></p>
+
+## URL Parameters
+
+Named route parameters are captured and added to `ctx.params`.
+
+```js
+const router = new Router()
+
+router.get('/:category/:title', (ctx) => {
+  // the params are exposed to the context.
+  ctx.body = ctx.params
+})
+
+goa.use(router.routes())
+```
+```js
+// Request /programming/how-to-node
+{ category: 'programming', title: 'how-to-node' }
+```
+
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/8.svg?sanitize=true">
 </a></p>
 
 ## Copyright & License
