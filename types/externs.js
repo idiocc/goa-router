@@ -159,3 +159,7 @@ _goa.RouterConfig.prototype.routerPath
  * @type {!_goa.Router}
  */
 _goa.Middleware.prototype.router
+/**
+ * @type {!Object}
+ */
+_goa.Context.prototype.params
