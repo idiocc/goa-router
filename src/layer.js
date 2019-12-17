@@ -104,7 +104,9 @@ export default class Layer {
   url(params, options) {
     let args = params
     const url = this.path.replace(/\(\.\*\)/g, '')
-    const toPath = compile(url)
+    const toPath = compile(url, {
+      encode: encodeURIComponent,
+    })
     let replaced
 
     if (typeof params != 'object') {

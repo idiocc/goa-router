@@ -412,7 +412,7 @@ export default class Router {
   }
 }
 
-const methods = METHODS.map((m) => m.toLowerCase())
+export const methods = METHODS.map((m) => m.toLowerCase())
 
 /**
  * Create `router.verb()` methods, where *verb* is one of the HTTP verbs such
