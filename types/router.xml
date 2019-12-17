@@ -28,7 +28,6 @@
       <arg string name="source">URL or route name.</arg>
       <arg string name="destination">URL or route name.</arg>
       <arg number name="code" opt>The HTTP status code. Default `301`.</arg>
-
       Redirect `source` to `destination` URL with optional 30x status `code`.
       Both `source` and `destination` can be route names.
     </fn>
@@ -80,16 +79,16 @@
     </prop>
   </interface>
 
-  <type record name="AllowedMethodsOptions">
+  <type record name="AllowedMethodsOptions" desc="The options for the `allowedMethods` middleware generation.">
     <prop boolean name="throw" opt>
       Throw error instead of setting status and header.
     </prop>
-    <prop type="!Function" name="notImplemented" opt>
+    <fn name="notImplemented" return="!Error" opt>
       Throw the returned value in place of the default `NotImplemented` error.
-    </prop>
-    <prop type="!Function" name="methodNotAllowed" opt>
+    </fn>
+    <fn name="methodNotAllowed" return="!Error" opt>
       Throw the returned value in place of the default `MethodNotAllowed` error.
-    </prop>
+    </fn>
   </type>
 
   <type record name="RouterConfig" desc="Config for the router.">

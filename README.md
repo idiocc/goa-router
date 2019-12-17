@@ -35,46 +35,56 @@ The package is available by importing its default class:
 import Router from '@goa/router'
 ```
 
-<p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/1.svg?sanitize=true">
-</a></p>
-
-The example below creates a really simple router that responds only to the `GET /` request.
+The example below creates a really simple router that responds to the `GET /` and `POST /users/:uid` requests. Because of `allowedMethods`, it will also send a response to the `OPTIONS` request with the `allow` header.
 
 <table>
 <tr><th><a href="example/index.js">Example</a></th><th>Output</th></tr>
 <tr><td>
 
 ```js
-import rqt from 'rqt'
+import rqt, { aqt } from 'rqt'
 import Goa from '@goa/koa'
 import Router from '@goa/router'
 
 const goa = new Goa()
 const router = new Router()
-router.get('/', (ctx, next) => {
-  ctx.body = 'hello world'
-})
+router
+  .get('/', (ctx) => {
+    ctx.body = `Hello world`
+  })
+  .post('/users/:uid', (ctx) => {
+    ctx.body = `You have edited the user ${ctx.params.uid}`
+  })
 goa.use(router.routes())
 
-goa.listen(async function() {
-  const url = `http://localhost:${this.address().port}`
-  const res = await rqt(`${url}/`)
-  console.log(res)
-  this.close()
-})
+goa.use(router.allowedMethods())
 ```
 </td>
 <td>
 
-```
-hello world
+```sh
+​
+
+
+
+
+
+
+# GET /
+Hello world
+
+# POST /users/100
+You have edited the user 100
+
+
+# OPTIONS /
+HEAD, GET
 ```
 </td></tr>
 </table>
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/2.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/1.svg?sanitize=true">
 </a></p>
 
 __<a name="type-router">`Router`</a>__: Router For Goa Apps.
@@ -137,7 +147,7 @@ const url = Router.url('/users/:id', { id: 1 })
  </tr>
  <tr>
   <td rowSpan="3" align="center"><ins>allowedMethods</ins></td>
-  <td><em>(options: <a href="#type-allowedmethodsoptions">!AllowedMethodsOptions</a>) => <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a></em></td>
+  <td><em>(options: <a href="#type-allowedmethodsoptions" title="The options for the `allowedMethods` middleware generation.">!AllowedMethodsOptions</a>) => <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a></em></td>
  </tr>
  <tr></tr>
  <tr>
@@ -314,7 +324,7 @@ router.prefix('/things/:thing_id')
 </table>
 
 
-__<a name="type-allowedmethodsoptions">`AllowedMethodsOptions`</a>__
+__<a name="type-allowedmethodsoptions">`AllowedMethodsOptions`</a>__: The options for the `allowedMethods` middleware generation.
 <table>
  <thead><tr>
   <th>Name</th>
@@ -332,7 +342,7 @@ __<a name="type-allowedmethodsoptions">`AllowedMethodsOptions`</a>__
  </tr>
  <tr>
   <td rowSpan="3" align="center">notImplemented</td>
-  <td><em>!Function</em></td>
+  <td><em>() => !Error</em></td>
  </tr>
  <tr></tr>
  <tr>
@@ -342,7 +352,7 @@ __<a name="type-allowedmethodsoptions">`AllowedMethodsOptions`</a>__
  </tr>
  <tr>
   <td rowSpan="3" align="center">methodNotAllowed</td>
-  <td><em>!Function</em></td>
+  <td><em>() => !Error</em></td>
  </tr>
  <tr></tr>
  <tr>
@@ -393,7 +403,7 @@ __<a name="type-routerconfig">`RouterConfig`</a>__: Config for the router.
 </table>
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/3.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/2.svg?sanitize=true">
 </a></p>
 
 ## Verbs
@@ -428,7 +438,7 @@ Route paths will be translated to regular expressions using [path-to-regexp](htt
 Query strings will not be considered when matching requests.
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/4.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/3.svg?sanitize=true">
 </a></p>
 
 ## Named Routes
@@ -445,7 +455,7 @@ router.url('user', 3)
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/5.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/4.svg?sanitize=true">
 </a></p>
 
 ## Multiple Middleware
@@ -468,7 +478,7 @@ router.get(
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/6.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/5.svg?sanitize=true">
 </a></p>
 
 
@@ -499,7 +509,7 @@ goa.use(forums.routes())
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/7.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/6.svg?sanitize=true">
 </a></p>
 
 ## Router Prefixes
@@ -530,7 +540,7 @@ goa.use(router.routes())
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/8.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/7.svg?sanitize=true">
 </a></p>
 
 ## URL Parameters
@@ -553,7 +563,7 @@ goa.use(router.routes())
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/9.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/8.svg?sanitize=true">
 </a></p>
 
 ## Copyright & License

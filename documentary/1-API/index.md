@@ -6,11 +6,7 @@ The package is available by importing its default class:
 import Router from '@goa/router'
 ```
 
-%~%
-
-<!-- <typedef method="router">types/api.xml</typedef> -->
-
-The example below creates a really simple router that responds only to the `GET /` request.
+The example below creates a really simple router that responds to the `GET /` and `POST /users/:uid` requests. Because of `allowedMethods`, it will also send a response to the `OPTIONS` request with the `allow` header.
 
 <table>
 <tr><th><a href="example/index.js">Example</a></th><th>Output</th></tr>
@@ -21,7 +17,7 @@ The example below creates a really simple router that responds only to the `GET 
 </td>
 <td>
 
-%FORK example%
+%FORK-sh example%
 </td></tr>
 </table>
 
