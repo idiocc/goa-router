@@ -1,6 +1,6 @@
 {
   "name": "@goa/router",
-  "version": "0.0.0-pre",
+  "version": "1.0.0",
   "description": "The Router For Creating Middleware For Goa Apps.",
   "main": "compile/index.js",
   "module": "src/index.js",
