@@ -379,6 +379,8 @@ hello world
 
 GNU Affero General Public License v3.0
 
+[Original Work](https://github.com/ZijianHe/koa-router) by Alexander C. Mingoia under MIT License found in [COPYING](https://github.com/ZijianHe/koa-router/blob/master/LICENSE).
+
 <table>
   <tr>
     <td><img src="https://avatars2.githubusercontent.com/u/40834161?s=100&amp;v=4" alt="idiocc"></td>
