@@ -433,6 +433,10 @@ router.get(
 
 It's possible to create a _Router_ instance, and then pass another _Router_ instance to its `.use` call to nest the two.
 
+<table>
+<tr><th><a href="example/nested.js">Source</a></th><th>Output</th></tr>
+<tr><td>
+
 ```js
 const forums = new Router()
 const posts = new Router()
@@ -443,17 +447,33 @@ posts.get('/', (ctx) => {
 posts.get('/:pid', (ctx) => {
   ctx.body = ctx.params
 })
-forums.use('/forums/:fid/posts', posts.routes(), posts.allowedMethods())
+forums.use('/forums/:fid/posts',
+  posts.routes(),
+  posts.allowedMethods())
 
-// responds to "/forums/123/posts" and "/forums/123/posts/123"
 goa.use(forums.routes())
 ```
+</td>
+<td>
+
 ```js
-// Request /forums/123/posts
+​
+
+
+// GET /forums/123/posts
 { fid: '123' }
-// Request /forums/123/posts/123
+
+// GET /forums/123/posts/123
 { fid: '123', pid: '123' }
+
+
+
+
+
+​
 ```
+</td></tr>
+</table>
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/7.svg?sanitize=true">
