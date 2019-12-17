@@ -1,9 +1,9 @@
 ## API
 
-The package is available by importing its default function:
+The package is available by importing its default class:
 
 ```js
-import router from '@goa/router'
+import Router from '@goa/router'
 ```
 
 %~%
@@ -21,7 +21,7 @@ import router from '@goa/router'
 
 Routes are assigned to the router by calling HTTP method verbs on the instance:
 
-%EXAMPLE example/verbs%
+%EXAMPLE: example/verbs%
 
 Additionally, `router.all()` can be used to match against all methods. `router.del()` is an alias for `router.delete()`.
 

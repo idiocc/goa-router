@@ -27,10 +27,10 @@ yarn add @goa/router
 
 ## API
 
-The package is available by importing its default function:
+The package is available by importing its default class:
 
 ```js
-import router from '@goa/router'
+import Router from '@goa/router'
 ```
 
 <p align="center"><a href="#table-of-contents">
@@ -383,7 +383,24 @@ hello world
 
 Routes are assigned to the router by calling HTTP method verbs on the instance:
 
-%EXAMPLE example/verbs%
+```js
+router
+  .get('/', (ctx, next) => {
+    ctx.body = 'Hello World!'
+  })
+  .post('/users', (ctx, next) => {
+    // ...
+  })
+  .put('/users/:id', (ctx, next) => {
+    // ...
+  })
+  .del('/users/:id', (ctx, next) => {
+    // ...
+  })
+  .all('/users/:id', (ctx, next) => {
+    // ...
+  })
+```
 
 Additionally, `router.all()` can be used to match against all methods. `router.del()` is an alias for `router.delete()`.
 
