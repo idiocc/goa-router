@@ -15,6 +15,10 @@ yarn add @goa/router
   * [`Router`](#type-router)
   * [`AllowedMethodsOptions`](#type-allowedmethodsoptions)
   * [`RouterConfig`](#type-routerconfig)
+- [Verbs](#verbs)
+- [Named Routes](#named-routes)
+- [Multiple Middleware](#multiple-middleware)
+- [Nested Routes](#nested-routes)
 - [Copyright & License](#copyright--license)
 
 <p align="center"><a href="#table-of-contents">
@@ -375,11 +379,102 @@ hello world
   <img src="/.documentary/section-breaks/2.svg?sanitize=true">
 </a></p>
 
+## Verbs
+
+Routes are assigned to the router by calling HTTP method verbs on the instance:
+
+%EXAMPLE example/verbs%
+
+Additionally, `router.all()` can be used to match against all methods. `router.del()` is an alias for `router.delete()`.
+
+When a route is matched, its path is available at `ctx._matchedRoute` and if named, the name is available at `ctx._matchedRouteName`.
+
+Route paths will be translated to regular expressions using [path-to-regexp](https://github.com/pillarjs/path-to-regexp).
+
+Query strings will not be considered when matching requests.
+
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/3.svg?sanitize=true">
+</a></p>
+
+## Named Routes
+
+Routes can optionally have names. This allows generation of URLs and easy renaming of URLs during development.
+
+```js
+router.get('user', '/users/:id', (ctx, next) => {
+  // ...
+})
+
+router.url('user', 3)
+// => "/users/3"
+```
+
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/4.svg?sanitize=true">
+</a></p>
+
+## Multiple Middleware
+
+Multiple middleware may be passed to the router.
+
+```js
+router.get(
+  '/users/:id',
+  async (ctx, next) => {
+    const user = await User.findOne(ctx.params.id)
+    ctx.user = user
+    await next()
+  },
+  ctx => {
+    console.log(ctx.user)
+    // => { id: 17, name: "Alex" }
+  }
+)
+```
+
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/5.svg?sanitize=true">
+</a></p>
+
+
+## Nested Routes
+
+It's possible to create a _Router_ instance, and then pass another _Router_ instance to its `.use` call to nest the two.
+
+```js
+const forums = new Router()
+const posts = new Router()
+
+posts.get('/', (ctx) => {
+  ctx.body = ctx.params
+})
+posts.get('/:pid', (ctx) => {
+  ctx.body = ctx.params
+})
+forums.use('/forums/:fid/posts', posts.routes(), posts.allowedMethods())
+
+// responds to "/forums/123/posts" and "/forums/123/posts/123"
+goa.use(forums.routes())
+```
+```js
+// Request /forums/123/posts
+{ fid: '123' }
+// Request /forums/123/posts/123
+{ fid: '123', pid: '123' }
+```
+
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/6.svg?sanitize=true">
+</a></p>
+
 ## Copyright & License
 
 GNU Affero General Public License v3.0
 
 [Original Work](https://github.com/ZijianHe/koa-router) by Alexander C. Mingoia under MIT License found in [COPYING](https://github.com/ZijianHe/koa-router/blob/master/LICENSE).
+
+There's also a fork in the [Koa org](https://github.com/koajs/router).
 
 <table>
   <tr>
