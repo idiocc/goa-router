@@ -24,7 +24,8 @@ The example below creates a really simple router that responds to the `GET /` an
 %~%
 
 <typedef narrow slimFunctions name="Router">types/router.xml</typedef>
-<typedef name="RouterConfig">types/router.xml</typedef>
+
+<typedef details="RouterConfig" name="RouterConfig">types/router.xml</typedef>
 
 %~%
 

@@ -13,7 +13,7 @@ yarn add @goa/router
 - [Table Of Contents](#table-of-contents)
 - [API](#api)
   * [`Router`](#type-router)
-  * [`RouterConfig`](#type-routerconfig)
+  * [<code>RouterConfig</code>](#type-routerconfig)
 - [Verbs](#verbs)
 - [Allowed Methods](#allowed-methods)
   * [`AllowedMethodsOptions`](#type-allowedmethodsoptions)
@@ -307,14 +307,16 @@ router.prefix('/things/:thing_id')
   </td>
  </tr>
 </table>
-__<a name="type-routerconfig">`RouterConfig`</a>__: Config for the router.
 
+<details>
+ <summary><strong><a name="type-routerconfig"><code>RouterConfig</code></a></strong>: Config for the router.</summary>
 
 |    Name    |             Type              |                                          Description                                          |
 | ---------- | ----------------------------- | --------------------------------------------------------------------------------------------- |
 | methods    | <em>!Array&lt;string&gt;</em> | The methods to serve.<br/>Default `HEAD`, `OPTIONS`, `GET`, `PUT`, `PATCH`, `POST`, `DELETE`. |
 | prefix     | <em>string</em>               | Prefix router paths.                                                                          |
 | routerPath | <em>string</em>               | Custom routing path.                                                                          |
+</details>
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/2.svg?sanitize=true">
