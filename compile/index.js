@@ -32,9 +32,19 @@ class Router extends _Router {
     super(opts)
   }
   /**
+   * Redirect `source` to `destination` URL with optional 30x status `code`.
+   * Both `source` and `destination` can be route names.
+   * @param {string} source URL or route name.
+   * @param {string} destination URL or route name.
+   * @param {number=} [code] The HTTP status code. Default `301`.
+   */
+  redirect(source, destination, code) {
+    return super.redirect(source, destination, code)
+  }
+  /**
    * Generate URL from url pattern and given `params`.
    * @param {string} path The URL pattern.
-   * @param {...!Object} args
+   * @param {...!Object} params The URL parameters.
    * @return {string}
    * @example
    * ```js
@@ -109,16 +119,6 @@ class Router extends _Router {
     return super.param(param, middleware)
   }
   /**
-   * Redirect `source` to `destination` URL with optional 30x status `code`.
-   * Both `source` and `destination` can be route names.
-   * @param {string} source URL or route name.
-   * @param {string} destination URL or route name.
-   * @param {number=} [code] The HTTP status code. Default `301`.
-   */
-  redirect(source, destination, code) {
-    return super.redirect(source, destination, code)
-  }
-  /**
    * Lookup route with given `name`.
    * @param {string} name The route name.
    * @return {!_goa.Layer}
@@ -127,37 +127,46 @@ class Router extends _Router {
     return super.route(name)
   }
   /**
-   * Generate URL for route. Takes a route name and map of named `params`. If the route is not found, returns an error.
+   * Generate URL for route. Takes a route name and map of named `params`. If the route is not found, returns an error. The last argument can be an object with the `query` property.
    * @param {string} name The route name.
-   * @param {!Object} params The URL parameters.
-   * @param {{ query: (string|!Object) }=} [options] The options.
+   * @param {...!Object} params The URL parameters and options.
    * @return {(string|!Error)}
    * @example
    * ```js
+   * // To use urls, a named route should be created:
    * router.get('user', '/users/:id', (ctx, next) => {
    *   // ...
    * })
-   *
+   * ```
+   * Get the URL by passing a **simple** parameter
+   * ```js
    * router.url('user', 3)
    * // => "/users/3"
-   *
+   * ```
+   * Get the URL by passing parameters in an **object**
+   * ```js
    * router.url('user', { id: 3 })
    * // => "/users/3"
-   *
-   * router.use((ctx, next) => {
-   *   // redirect to named route
+   * ```
+   * Use the url method for **redirects** to named routes:
+   * ```js
+   * router.use((ctx) => {
    *   ctx.redirect(ctx.router.url('sign-in'))
    * })
-   *
+   * ```
+   * Pass an **object query**:
+   * ```js
    * router.url('user', { id: 3 }, { query: { limit: 1 } })
    * // => "/users/3?limit=1"
-   *
+   * ```
+   * Pass an already **serialised query**:
+   * ```js
    * router.url('user', { id: 3 }, { query: 'limit=1' })
    * // => "/users/3?limit=1"
    * ```
    */
-  url(name, params, options) {
-    return super.url(name, params, options)
+  url(name, ...params) {
+    return super.url(name, ...params)
   }
   /**
    * Use given middleware.
@@ -165,7 +174,7 @@ class Router extends _Router {
    * sequentially, requests start at the first middleware and work their way
    * "down" the middleware stack.
    * @param {(string|!Array<string>|!_goa.Middleware)} path The path or an array of paths. Pass middleware without path to apply to `*`.
-   * @param {...!_goa.Middleware} args
+   * @param {...!_goa.Middleware} middleware The middleware to use.
    * @example
    * ```js
    * // session middleware will run before authorize
@@ -212,47 +221,21 @@ class Router extends _Router {
 
 module.exports = Router
 
-/* typal types/index.xml namespace */
+/* typal types/index.xml ignore:_goa.LayerConfig,namespace */
 /**
- * @typedef {import('@typedefs/goa').Middleware} _goa.Middleware
- * @typedef {_goa.LayerConfig} LayerConfig `＠record` Options for the layer.
- * @typedef {Object} _goa.LayerConfig `＠record` Options for the layer.
- * @prop {string|null} [name] Route name.
- * @prop {boolean} [sensitive=false] Whether it is case-sensitive. Default `false`.
- * @prop {boolean} [strict=false] Require the trailing slash. Default `false`.
- * @prop {boolean} [ignoreCaptures=false] Ignore captures. Default `false`.
- * @typedef {_goa.Layer} Layer `＠interface`
- * @typedef {Object} _goa.Layer `＠interface`
+ * @typedef {import('@typedefs/goa').Middleware} Middleware
+ * @typedef {Object} Layer `＠interface` A single piece of middleware that can be matched for all possible routes.
+ * @prop {!Array<{ name: string }>} paramNames Parameter names stored in this layer. Default `[]`.
  */
 
-/* typal types/router.xml namespace */
+/* typal types/router.xml ignore:_goa.Router,namespace */
 /**
- * @typedef {import('@typedefs/goa').Middleware} _goa.Middleware
- * @typedef {_goa.Router} Router `＠interface` Router For Goa Apps.
- * @typedef {Object} _goa.Router `＠interface` Router For Goa Apps.
- * @prop {(opts?: !_goa.RouterConfig) => _goa.Router} constructor Create a new router.
- * @prop {(options: !_goa.AllowedMethodsOptions) => !_goa.Middleware} allowedMethods Returns separate middleware for responding to `OPTIONS` requests with
- * an `Allow` header containing the allowed methods, as well as responding
- * with `405 Method Not Allowed` and `501 Not Implemented` as appropriate.
- * @prop {(param: string, middleware: !_goa.Middleware) => !_goa.Router} param Run middleware for named route parameters. Useful for auto-loading or validation.
- * @prop {(source: string, destination: string, code?: number) => !_goa.Router} redirect Redirect `source` to `destination` URL with optional 30x status `code`.
- * Both `source` and `destination` can be route names.
- * @prop {(name: string) => !_goa.Layer} route Lookup route with given `name`.
- * @prop {(name: string, params: !Object, options?: { query: (string|!Object) }) => (string|!Error)} url Generate URL for route. Takes a route name and map of named `params`. If the route is not found, returns an error.
- * @prop {(path: (string|!Array<string>|!_goa.Middleware), ...middleware: !_goa.Middleware[]) => !_goa.Router} use Use given middleware.
- * Middleware run in the order they are defined by `.use()`. They are invoked
- * sequentially, requests start at the first middleware and work their way
- * "down" the middleware stack.
- * @prop {(prefix: string) => !_goa.Router} prefix Set the path prefix for a Router instance that was already initialized.
- * @prop {() => !_goa.Middleware} middleware Returns router middleware which dispatches a route matching the request.
- * @prop {() => !_goa.Middleware} routes An alias for `middleware`.
- * @typedef {_goa.AllowedMethodsOptions} AllowedMethodsOptions `＠record`
- * @typedef {Object} _goa.AllowedMethodsOptions `＠record`
+ * @typedef {import('@typedefs/goa').Middleware} Middleware
+ * @typedef {Object} AllowedMethodsOptions `＠record`
  * @prop {boolean} [throw] Throw error instead of setting status and header.
  * @prop {!Function} [notImplemented] Throw the returned value in place of the default `NotImplemented` error.
  * @prop {!Function} [methodNotAllowed] Throw the returned value in place of the default `MethodNotAllowed` error.
- * @typedef {_goa.RouterConfig} RouterConfig `＠record` Config for the router.
- * @typedef {Object} _goa.RouterConfig `＠record` Config for the router.
+ * @typedef {Object} RouterConfig `＠record` Config for the router.
  * @prop {!Array<string>} [methods] The methods to serve.
  * Default `HEAD`, `OPTIONS`, `GET`, `PUT`, `PATCH`, `POST`, `DELETE`.
  * @prop {string} [prefix] Prefix router paths.

@@ -1,6 +1,7 @@
 import { equal } from '@zoroaster/assert'
 import Context from '../context'
-import Router, { methods } from '../../src'
+import Router from '../../src'
+import { methods } from '../../src/' // add tralinig slash to prevent .alamoderc
 import { strictEqual } from 'assert'
 
 /** @type {Object.<string, (c: Context)>} */

@@ -490,3 +490,9 @@ export default function pathToRegexp(
   if (Array.isArray(path)) return arrayToRegexp(path, keys, options)
   return stringToRegexp(path, keys, options)
 }
+
+/*!
+ * path-to-regexp
+ * The MIT License (MIT)
+ * Copyright (c) 2014 Blake Embrey (hello@blakeembrey.com)
+ */

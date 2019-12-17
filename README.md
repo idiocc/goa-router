@@ -66,6 +66,17 @@ app
   </td>
  </tr>
  <tr>
+  <td rowSpan="3" align="center"><ins>redirect</ins></td>
+  <td><em>(source: string, destination: string, code?: number) => <a href="#type-router" title="Router For Goa Apps.">!Router</a></em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Redirect <code>source</code> to <code>destination</code> URL with optional 30x status <code>code</code>.
+   Both <code>source</code> and <code>destination</code> can be route names.
+  </td>
+ </tr>
+ <tr>
   <td rowSpan="3" align="center"><kbd>static</kbd> <ins>url</ins></td>
   <td><em>(path: string, ...params: !Object[]) => string</em></td>
  </tr>
@@ -145,14 +156,13 @@ router
   </td>
  </tr>
  <tr>
-  <td rowSpan="3" align="center"><ins>redirect</ins></td>
-  <td><em>(source: string, destination: string, code?: number) => <a href="#type-router" title="Router For Goa Apps.">!Router</a></em></td>
+  <td rowSpan="3" align="center"><ins>opts</ins></td>
+  <td><em><a href="#type-routerconfig" title="Config for the router.">!RouterConfig</a></em></td>
  </tr>
  <tr></tr>
  <tr>
   <td>
-   Redirect <code>source</code> to <code>destination</code> URL with optional 30x status <code>code</code>.
-   Both <code>source</code> and <code>destination</code> can be route names.
+   Stored options passed to the <em>Router</em> constructor.
   </td>
  </tr>
  <tr>
@@ -167,32 +177,42 @@ router
  </tr>
  <tr>
   <td rowSpan="3" align="center"><ins>url</ins></td>
-  <td><em>(name: string, params: !Object, options?: { query: (string | !Object) }) => (string | !Error)</em></td>
+  <td><em>(name: string, ...params: !Object[]) => (string | !Error)</em></td>
  </tr>
  <tr></tr>
  <tr>
   <td>
 
-Generate URL for route. Takes a route name and map of named `params`. If the route is not found, returns an error.
+Generate URL for route. Takes a route name and map of named `params`. If the route is not found, returns an error. The last argument can be an object with the `query` property.
 ```js
+// To use urls, a named route should be created:
 router.get('user', '/users/:id', (ctx, next) => {
   // ...
 })
-
+```
+Get the URL by passing a **simple** parameter
+```js
 router.url('user', 3)
 // => "/users/3"
-
+```
+Get the URL by passing parameters in an **object**
+```js
 router.url('user', { id: 3 })
 // => "/users/3"
-
-router.use((ctx, next) => {
-  // redirect to named route
+```
+Use the url method for **redirects** to named routes:
+```js
+router.use((ctx) => {
   ctx.redirect(ctx.router.url('sign-in'))
 })
-
+```
+Pass an **object query**:
+```js
 router.url('user', { id: 3 }, { query: { limit: 1 } })
 // => "/users/3?limit=1"
-
+```
+Pass an already **serialised query**:
+```js
 router.url('user', { id: 3 }, { query: 'limit=1' })
 // => "/users/3?limit=1"
 ```
@@ -257,7 +277,7 @@ __<a name="type-allowedmethodsoptions">`AllowedMethodsOptions`</a>__
   <th>Type &amp; Description</th>
  </tr></thead>
  <tr>
-  <td rowSpan="3" align="center"><strong>throw*</strong></td>
+  <td rowSpan="3" align="center">throw</td>
   <td><em>boolean</em></td>
  </tr>
  <tr></tr>
@@ -267,7 +287,7 @@ __<a name="type-allowedmethodsoptions">`AllowedMethodsOptions`</a>__
   </td>
  </tr>
  <tr>
-  <td rowSpan="3" align="center"><strong>notImplemented*</strong></td>
+  <td rowSpan="3" align="center">notImplemented</td>
   <td><em>!Function</em></td>
  </tr>
  <tr></tr>
@@ -277,7 +297,7 @@ __<a name="type-allowedmethodsoptions">`AllowedMethodsOptions`</a>__
   </td>
  </tr>
  <tr>
-  <td rowSpan="3" align="center"><strong>methodNotAllowed*</strong></td>
+  <td rowSpan="3" align="center">methodNotAllowed</td>
   <td><em>!Function</em></td>
  </tr>
  <tr></tr>

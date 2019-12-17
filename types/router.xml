@@ -42,13 +42,10 @@
       <arg string name="name">
         The route name.
       </arg>
-      <arg type="!Object" name="params">
-        The URL parameters.
+      <arg type="!Object" name="...params">
+        The URL parameters and options.
       </arg>
-      <arg type="{ query: string|!Object }" name="options" opt>
-        The options.
-      </arg>
-      Generate URL for route. Takes a route name and map of named `params`. If the route is not found, returns an error.
+      Generate URL for route. Takes a route name and map of named `params`. If the route is not found, returns an error. The last argument can be an object with the `query` property.
     </fn>
     <fn static name="url" return="string" example="example/jsdoc/static-url.js">
       <arg string name="path">
@@ -78,6 +75,9 @@
     <fn name="middleware" alias="routes" return="!_goa.Middleware">
       Returns router middleware which dispatches a route matching the request.
     </fn>
+    <prop type="!_goa.RouterConfig" name="opts">
+      Stored options passed to the _Router_ constructor.
+    </prop>
   </interface>
 
   <type record name="AllowedMethodsOptions">

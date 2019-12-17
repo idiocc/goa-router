@@ -18,7 +18,7 @@
     "d": "yarn-s template d1 externs",
     "d1": "typal compile/index.js -u -t types/index.xml",
     "template": "typal compile/template.js -T compile/index.js -t types",
-    "externs": "typal types/externs.js"
+    "externs": "typal types/externs.js -e"
   },
   "files": [
     "src",
@@ -57,12 +57,10 @@
     "erte": "^1.2.0",
     "eslint-config-artdeco": "1.0.1",
     "rqt": "^4.0.0",
-    "typal": "^1.24.2",
+    "typal": "^1.24.4",
     "yarn-s": "1.2.1",
     "zoroaster": "^4.1.2"
   },
-  "dependencies": {
-    "urijs": "^1.19.2"
-  },
+  "dependencies": {},
   "fork": "7.4.0"
 }

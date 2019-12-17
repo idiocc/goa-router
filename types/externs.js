@@ -3,7 +3,7 @@
  * @externs
  */
 
-/* typal types/index.xml externs */
+/* typal types/index.xml */
 /** @const */
 var _goa = {}
 /**
@@ -32,23 +32,38 @@ _goa.LayerConfig.prototype.strict
  */
 _goa.LayerConfig.prototype.ignoreCaptures
 /**
+ * A single piece of middleware that can be matched for all possible routes.
  * @interface
  */
 _goa.Layer = function() {}
+/**
+ * Parameter names stored in this layer. Default `[]`.
+ * @type {!Array<{ name: string }>}
+ */
+_goa.Layer.prototype.paramNames
 
-/* typal types/router.xml externs */
+/* typal types/router.xml */
 /**
  * Router For Goa Apps.
  * @interface
  */
 _goa.Router = function() {}
 /**
+ * Redirect `source` to `destination` URL with optional 30x status `code`.
+ * Both `source` and `destination` can be route names.
+ * @param {string} source URL or route name.
+ * @param {string} destination URL or route name.
+ * @param {number=} [code] The HTTP status code. Default `301`.
+ * @return {!_goa.Router}
+ */
+_goa.Router.prototype.redirect = function(source, destination, code) {}
+/**
  * Generate URL from url pattern and given `params`.
  * @param {string} path The URL pattern.
- * @param {...!Object} args
+ * @param {...!Object} params The URL parameters.
  * @return {string}
  */
-_goa.Router.url = function(path, ...args) {}
+_goa.Router.url = function(path, ...params) {}
 /**
  * Returns separate middleware for responding to `OPTIONS` requests with
  * an `Allow` header containing the allowed methods, as well as responding
@@ -65,14 +80,10 @@ _goa.Router.prototype.allowedMethods = function(options) {}
  */
 _goa.Router.prototype.param = function(param, middleware) {}
 /**
- * Redirect `source` to `destination` URL with optional 30x status `code`.
- * Both `source` and `destination` can be route names.
- * @param {string} source URL or route name.
- * @param {string} destination URL or route name.
- * @param {number=} [code] The HTTP status code. Default `301`.
- * @return {!_goa.Router}
+ * Stored options passed to the _Router_ constructor.
+ * @type {!_goa.RouterConfig}
  */
-_goa.Router.prototype.redirect = function(source, destination, code) {}
+_goa.Router.prototype.opts
 /**
  * Lookup route with given `name`.
  * @param {string} name The route name.
@@ -80,23 +91,22 @@ _goa.Router.prototype.redirect = function(source, destination, code) {}
  */
 _goa.Router.prototype.route = function(name) {}
 /**
- * Generate URL for route. Takes a route name and map of named `params`. If the route is not found, returns an error.
+ * Generate URL for route. Takes a route name and map of named `params`. If the route is not found, returns an error. The last argument can be an object with the `query` property.
  * @param {string} name The route name.
- * @param {!Object} params The URL parameters.
- * @param {{ query: (string|!Object) }=} [options] The options.
+ * @param {...!Object} params The URL parameters and options.
  * @return {(string|!Error)}
  */
-_goa.Router.prototype.url = function(name, params, options) {}
+_goa.Router.prototype.url = function(name, ...params) {}
 /**
  * Use given middleware.
  * Middleware run in the order they are defined by `.use()`. They are invoked
  * sequentially, requests start at the first middleware and work their way
  * "down" the middleware stack.
  * @param {(string|!Array<string>|!_goa.Middleware)} path The path or an array of paths. Pass middleware without path to apply to `*`.
- * @param {...!_goa.Middleware} args
+ * @param {...!_goa.Middleware} middleware The middleware to use.
  * @return {!_goa.Router}
  */
-_goa.Router.prototype.use = function(path, ...args) {}
+_goa.Router.prototype.use = function(path, ...middleware) {}
 /**
  * Set the path prefix for a Router instance that was already initialized.
  * @param {string} prefix The prefix to set.
@@ -163,3 +173,11 @@ _goa.Middleware.prototype.router
  * @type {!Object}
  */
 _goa.Context.prototype.params
+/**
+ * @type {string}
+ */
+_goa.Context.prototype._matchedRouteName
+/**
+ * @type {string}
+ */
+_goa.Context.prototype._matchedRoute

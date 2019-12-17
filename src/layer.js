@@ -1,7 +1,6 @@
 import Debug from '@idio/debug'
 import pathToRegExp, { compile, parse } from './path-to-regexp'
-const uri = require(/* ok */'urijs')
-// import uri from 'urijs'
+import { stringify } from 'querystring'
 
 const debug = Debug('koa-router')
 
@@ -99,8 +98,8 @@ export default class Layer {
    * route.url({ id: 123 }); // => "/users/123"
    * ```
    *
-   * @param {Object} params url parameters
-   * @param {Object} options
+   * @param {!Object|string} params url parameters
+   * @param {!Object|string} options
    */
   url(params, options) {
     let args = params
@@ -111,7 +110,7 @@ export default class Layer {
     let replaced
 
     if (typeof params != 'object') {
-      args = Array.prototype.slice.call(arguments)
+      args = [...arguments]
       if (typeof args[args.length - 1] == 'object') {
         options = args[args.length - 1]
         args = args.slice(0, args.length - 1)
@@ -132,11 +131,10 @@ export default class Layer {
     }
 
     replaced = toPath(replace)
-
-    if (options && options.query) {
-      const r = new uri(replaced)
-      r.search(options.query)
-      return r.toString()
+    if (options && options['query']) {
+      const query = options['query']
+      const q = typeof query == 'string' ? query : stringify(query)
+      return `${replaced}?${q}`
     }
 
     return replaced

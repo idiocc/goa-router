@@ -160,15 +160,10 @@ rqt@^4.0.0:
   resolved "https://registry.yarnpkg.com/rqt/-/rqt-4.0.0.tgz#b57f64bf1b3b8b8109617f9dc67b9dd9ea5cb4d6"
   integrity sha512-DUm6ZAt6ESeY46aFWhQwBvsOpXABRL5TTkpN/3KJjog7uk2ncYuU4UZ8FQV6qfWybihkMFCdoESNSxYQ5rSZiQ==
 
-typal@^1.24.2:
-  version "1.24.2"
-  resolved "https://registry.yarnpkg.com/typal/-/typal-1.24.2.tgz#542e184cd7ca256ad33e2c9db1b80ad8ef5dce80"
-  integrity sha512-s0IVjeRpGjtbkxoom5DOKviUWiUBYe6TLAskRNEUINQQtAW99gYEOGRD2pLh06H9cOykI5KAGDSG0+4lCatQcQ==
-
-urijs@^1.19.2:
-  version "1.19.2"
-  resolved "https://registry.yarnpkg.com/urijs/-/urijs-1.19.2.tgz#f9be09f00c4c5134b7cb3cf475c1dd394526265a"
-  integrity sha512-s/UIq9ap4JPZ7H1EB5ULo/aOUbWqfDi7FKzMC2Nz+0Si8GiT1rIEaprt8hy3Vy2Ex2aJPpOQv4P4DuOZ+K1c6w==
+typal@^1.24.2, typal@^1.24.4:
+  version "1.24.4"
+  resolved "https://registry.yarnpkg.com/typal/-/typal-1.24.4.tgz#4d55e55cdc2cfb699f4213f7357ee511c73c0c66"
+  integrity sha512-f9oA1erzArzfPD2bGlENcsElRjksr2PdKMQCEbDcB0BMRPg2HPr2SDd8PlaiQ3Et52BMZtWo3dnpllYtlWmWsg==
 
 yarn-s@1.2.1:
   version "1.2.1"

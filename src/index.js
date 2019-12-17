@@ -102,35 +102,6 @@ export default class Router {
   }
 
   /**
-   * Register route with all methods.
-   *
-   * @param {string|null} name Optional.
-   * @param {string|RegExp|!_goa.Middleware} path
-   * @param {!Array<!_goa.Middleware>} middleware You may also pass multiple middleware.
-   * @private
-   */
-  all(name, path, ...middleware) {
-    let mw
-
-    if (typeof path == 'string' || path instanceof RegExp) {
-      mw = middleware
-    } else {
-      mw = [path, ...middleware]
-      path = name
-      name = null
-    }
-
-    // src/index.js:123: WARNING - [JSC_TYPE_MISMATCH] actual parameter 1 of Router$$module$src$index.prototype.register does not match formal parameter
-    // found   : (RegExp|null|string)
-    // required: (Array<string>|RegExp|string)
-    // this.register(path, methods, mw, { name })
-
-    this.register(path, methods, mw, { name })
-
-    return this
-  }
-
-  /**
    * Redirect `source` to `destination` URL with optional 30x status `code`.
    * Both `source` and `destination` can be route names.
    *
@@ -153,7 +124,7 @@ export default class Router {
       destination = d
     }
 
-    return this.all(source, ctx => {
+    return this['all'](source, ctx => {
       ctx.redirect(destination)
       ctx.status = /** @type {number} */ (code)
     })
@@ -292,7 +263,7 @@ export default class Router {
    * @param {string} path Url pattern.
    * @param {!Array<!Object>} params Url parameters.
    */
-  static url(path, ...params) {
+  static 'url'(path, ...params) {
     return Layer.prototype.url.apply(/** @type {!Layer} */ ({ path }), params)
   }
   /**
@@ -529,7 +500,7 @@ export const methods = METHODS.map((m) => m.toLowerCase())
  * used to convert paths to regular expressions.
  *
  */
-methods.forEach((method) => {
+;[...methods, 'all'].forEach((method) => {
   /**
    * A verb.
    * @this {_goa.Router}
@@ -545,7 +516,7 @@ methods.forEach((method) => {
       name = null
     }
 
-    this.register(path, [method], mw, {
+    this.register(path, method == 'all' ? methods : [method], mw, {
       name,
     })
 

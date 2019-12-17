@@ -16,7 +16,9 @@
     </prop>
   </type>
 
-  <interface name="Layer">
-
+  <interface name="Layer" desc="A single piece of middleware that can be matched for all possible routes.">
+    <prop type="!Array<{ name: string }>" name="paramNames" initial="[]">
+      Parameter names stored in this layer.
+    </prop>
   </interface>
 </types>
