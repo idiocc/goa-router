@@ -1,11 +1,12 @@
 import Debug from '@idio/debug'
 import pathToRegExp, { compile, parse } from './path-to-regexp'
-import uri from 'urijs'
+const uri = require(/* ok */'urijs')
+// import uri from 'urijs'
 
 const debug = Debug('koa-router')
 
 /**
- * @private
+ * @implements {_goa.Layer}
  */
 export default class Layer {
   /**
@@ -218,10 +219,10 @@ function safeDecodeURIComponent(text) {
 }
 
 /**
- * @suppress {nonStandardJSDocs}
+ * @suppress {nonStandardJsDocs}
  * @typedef {import('../').LayerConfig} _goa.LayerConfig
  */
 /**
- * @suppress {nonStandardJSDocs}
+ * @suppress {nonStandardJsDocs}
  * @typedef {import('@typedefs/goa').Middleware} _goa.Middleware
  */

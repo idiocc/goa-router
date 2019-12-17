@@ -81,13 +81,13 @@
   </interface>
 
   <type record name="AllowedMethodsOptions">
-    <prop boolean name="throw">
+    <prop boolean name="throw" opt>
       Throw error instead of setting status and header.
     </prop>
-    <prop type="!Function" name="notImplemented">
+    <prop type="!Function" name="notImplemented" opt>
       Throw the returned value in place of the default `NotImplemented` error.
     </prop>
-    <prop type="!Function" name="methodNotAllowed">
+    <prop type="!Function" name="methodNotAllowed" opt>
       Throw the returned value in place of the default `MethodNotAllowed` error.
     </prop>
   </type>

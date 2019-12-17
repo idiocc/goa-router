@@ -13,7 +13,7 @@ var _goa = {}
 _goa.LayerConfig
 /**
  * Route name.
- * @type {string|null}
+ * @type {(string|null)|undefined}
  */
 _goa.LayerConfig.prototype.name
 /**
@@ -119,17 +119,17 @@ _goa.Router.prototype.routes = function() {}
 _goa.AllowedMethodsOptions
 /**
  * Throw error instead of setting status and header.
- * @type {boolean}
+ * @type {boolean|undefined}
  */
 _goa.AllowedMethodsOptions.prototype.throw
 /**
  * Throw the returned value in place of the default `NotImplemented` error.
- * @type {!Function}
+ * @type {(!Function)|undefined}
  */
 _goa.AllowedMethodsOptions.prototype.notImplemented
 /**
  * Throw the returned value in place of the default `MethodNotAllowed` error.
- * @type {!Function}
+ * @type {(!Function)|undefined}
  */
 _goa.AllowedMethodsOptions.prototype.methodNotAllowed
 /**
@@ -153,3 +153,9 @@ _goa.RouterConfig.prototype.prefix
  * @type {string|undefined}
  */
 _goa.RouterConfig.prototype.routerPath
+
+// assign custom properties manually
+/**
+ * @type {!_goa.Router}
+ */
+_goa.Middleware.prototype.router

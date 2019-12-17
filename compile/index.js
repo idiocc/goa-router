@@ -50,9 +50,9 @@ class Router extends _Router {
    * an `Allow` header containing the allowed methods, as well as responding
    * with `405 Method Not Allowed` and `501 Not Implemented` as appropriate.
    * @param {!_goa.AllowedMethodsOptions} options
-   * @param {boolean} options.throw Throw error instead of setting status and header.
-   * @param {!Function} options.notImplemented Throw the returned value in place of the default `NotImplemented` error.
-   * @param {!Function} options.methodNotAllowed Throw the returned value in place of the default `MethodNotAllowed` error.
+   * @param {boolean} [options.throw] Throw error instead of setting status and header.
+   * @param {!Function} [options.notImplemented] Throw the returned value in place of the default `NotImplemented` error.
+   * @param {!Function} [options.methodNotAllowed] Throw the returned value in place of the default `MethodNotAllowed` error.
    * @return {!_goa.Middleware}
    * @example
    * ```js
@@ -217,7 +217,7 @@ module.exports = Router
  * @typedef {import('@typedefs/goa').Middleware} _goa.Middleware
  * @typedef {_goa.LayerConfig} LayerConfig `＠record` Options for the layer.
  * @typedef {Object} _goa.LayerConfig `＠record` Options for the layer.
- * @prop {string|null} name Route name.
+ * @prop {string|null} [name] Route name.
  * @prop {boolean} [sensitive=false] Whether it is case-sensitive. Default `false`.
  * @prop {boolean} [strict=false] Require the trailing slash. Default `false`.
  * @prop {boolean} [ignoreCaptures=false] Ignore captures. Default `false`.
@@ -248,9 +248,9 @@ module.exports = Router
  * @prop {() => !_goa.Middleware} routes An alias for `middleware`.
  * @typedef {_goa.AllowedMethodsOptions} AllowedMethodsOptions `＠record`
  * @typedef {Object} _goa.AllowedMethodsOptions `＠record`
- * @prop {boolean} throw Throw error instead of setting status and header.
- * @prop {!Function} notImplemented Throw the returned value in place of the default `NotImplemented` error.
- * @prop {!Function} methodNotAllowed Throw the returned value in place of the default `MethodNotAllowed` error.
+ * @prop {boolean} [throw] Throw error instead of setting status and header.
+ * @prop {!Function} [notImplemented] Throw the returned value in place of the default `NotImplemented` error.
+ * @prop {!Function} [methodNotAllowed] Throw the returned value in place of the default `MethodNotAllowed` error.
  * @typedef {_goa.RouterConfig} RouterConfig `＠record` Config for the router.
  * @typedef {Object} _goa.RouterConfig `＠record` Config for the router.
  * @prop {!Array<string>} [methods] The methods to serve.

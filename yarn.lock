@@ -52,6 +52,11 @@
   dependencies:
     mime-db "^1.42.0"
 
+"@goa/statuses@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@goa/statuses/-/statuses-1.0.1.tgz#1ac83df2fbabb4b357e9f8bd7c5638dd1f21b27f"
+  integrity sha512-gBhnn5XnasK9Vb4Diy0r71qU2LXpyx6ewsG4da/rxeY8N4xUTS78w1RS+KcdetBGBB2yYkdxblXyV4AwT1q+IA==
+
 "@idio/debug@^1.2.3":
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/@idio/debug/-/debug-1.2.3.tgz#ff002ec176bf45782aca7f70adcdde650fcb2a04"

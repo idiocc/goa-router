@@ -2,7 +2,7 @@
   <import name="Middleware" from="@typedefs/goa" ns="_goa" link="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid" />
 
   <type record name="LayerConfig" desc="Options for the layer.">
-    <prop type="string|null" name="name">
+    <prop type="string|null" name="name" opt>
       Route name.
     </prop>
     <prop boolean name="sensitive" default="false">

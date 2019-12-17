@@ -13,6 +13,9 @@ import Layer from './layer'
 
 const debug = Debug('@goa/router')
 
+/**
+ * @implements {_goa.Router}
+ */
 export default class Router {
   /**
    * Create a new router.
@@ -66,7 +69,7 @@ export default class Router {
             if (typeof notImplemented == 'function') {
               notImplementedThrowable = notImplemented() // set whatever the user returns from their function
             } else {
-              notImplementedThrowable = new HttpError.NotImplemented()
+              notImplementedThrowable = new HttpError['NotImplemented']()
             }
             throw notImplementedThrowable
           } else {
@@ -84,7 +87,7 @@ export default class Router {
               if (typeof methodNotAllowed == 'function') {
                 notAllowedThrowable = methodNotAllowed() // set whatever the user returns from their function
               } else {
-                notAllowedThrowable = new HttpError.MethodNotAllowed()
+                notAllowedThrowable = new HttpError['MethodNotAllowed']()
               }
               throw notAllowedThrowable
             } else {
@@ -101,8 +104,8 @@ export default class Router {
   /**
    * Register route with all methods.
    *
-   * @param {string} name Optional.
-   * @param {string|!RegExp|!_goa.Middleware} path
+   * @param {string|null} name Optional.
+   * @param {string|RegExp|!_goa.Middleware} path
    * @param {!Array<!_goa.Middleware>} middleware You may also pass multiple middleware.
    * @private
    */
@@ -116,6 +119,11 @@ export default class Router {
       path = name
       name = null
     }
+
+    // src/index.js:123: WARNING - [JSC_TYPE_MISMATCH] actual parameter 1 of Router$$module$src$index.prototype.register does not match formal parameter
+    // found   : (RegExp|null|string)
+    // required: (Array<string>|RegExp|string)
+    // this.register(path, methods, mw, { name })
 
     this.register(path, methods, mw, { name })
 
@@ -133,24 +141,28 @@ export default class Router {
   redirect(source, destination, code = 301) {
     // lookup source route by name
     if (source[0] != '/') {
-      source = this.url(source)
+      const s = this.url(source)
+      if (s instanceof Error) throw s
+      source = s
     }
 
     // lookup destination route by name
     if (destination[0] != '/') {
-      destination = this.url(destination)
+      const d = this.url(destination)
+      if (d instanceof Error) throw d
+      destination = d
     }
 
     return this.all(source, ctx => {
       ctx.redirect(destination)
-      ctx.status = code
+      ctx.status = /** @type {number} */ (code)
     })
   }
 
   /**
    * Create and register a route.
    *
-   * @param {string|!Array<string>} path The path string or an array of paths.
+   * @param {string|!Array<string>|RegExp} path The path string or an array of paths.
    * @param {!Array<string>} methods Array of HTTP verbs.
    * @param {!_goa.Middleware|!Array<!_goa.Middleware>} middleware Multiple middleware also accepted.
    * @param {!Object} [opts]
@@ -207,15 +219,13 @@ export default class Router {
       }
     }
 
-    return false
+    return null
   }
 
   /**
    * Generate URL for route. Takes a route name and map of named `params`.
    * @param {string} name route name
-   * @param {Object} params url parameters
-   * @param {Object} [options] options parameter
-   * @param {Object|string} [options.query] query options
+   * @param {...!Object} params url parameters and options
    */
   url(name, ...params) {
     const route = this.route(name)
@@ -283,7 +293,7 @@ export default class Router {
    * @param {!Array<!Object>} params Url parameters.
    */
   static url(path, ...params) {
-    return Layer.prototype.url.apply({ path }, params)
+    return Layer.prototype.url.apply(/** @type {!Layer} */ ({ path }), params)
   }
   /**
    * Set the path prefix for a Router instance that was already initialized.
@@ -307,8 +317,8 @@ export default class Router {
    * sequentially, requests start at the first middleware and work their way
    * "down" the middleware stack.
    *
-   * @param {string|!Array<string>|!_goa.Middleware} path
-   * @param {!Array<!_goa.Middleware>} middleware
+   * @param {string|Array<string>|!_goa.Middleware} path
+   * @param {...!_goa.Middleware} middleware
    */
   use(path, ...middleware) {
     // support array of paths
@@ -322,14 +332,14 @@ export default class Router {
     const hasPath = typeof path == 'string'
     if (!hasPath) {
       middleware.unshift(path)
-      path = undefined
+      path = null
     }
 
     middleware.forEach((m) => {
       const router = /** @type {Router} */ (m.router)
       if (router) {
         router.stack.forEach((nestedLayer) => {
-          if (path) nestedLayer.setPrefix(path)
+          if (path) nestedLayer.setPrefix(/** @type {string} */ (path))
           if (this.opts.prefix) nestedLayer.setPrefix(this.opts.prefix)
           this.stack.push(nestedLayer)
         })
@@ -340,7 +350,7 @@ export default class Router {
           })
         }
       } else {
-        this.register(path || '(.*)', [], m, { end: false, ignoreCaptures: !hasPath })
+        this.register(/** @type {string} */ (path || '(.*)'), [], m, { end: false, ignoreCaptures: !hasPath })
       }
     })
 
@@ -400,15 +410,6 @@ export default class Router {
     dispatch.router = this
 
     return dispatch
-  }
-  /**
-   * @suppress {checkTypes}
-   */
-  get 'del'() {
-    /**
-     * @suppress {checkTypes}
-     */
-    return this['delete']
   }
 }
 
@@ -529,6 +530,10 @@ export const methods = METHODS.map((m) => m.toLowerCase())
  *
  */
 methods.forEach((method) => {
+  /**
+   * A verb.
+   * @this {_goa.Router}
+   */
   function m(name, path, ...middleware) {
     let mw
 
@@ -547,6 +552,9 @@ methods.forEach((method) => {
     return this
   }
   Router.prototype[method] = m
+  if (method == 'delete') {
+    Router.prototype['del'] = m
+  }
 })
 
 /**
