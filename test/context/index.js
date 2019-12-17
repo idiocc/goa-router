@@ -16,8 +16,18 @@ export default class Context extends HttpContext {
   }
   /**
    * Starts the app for testing.
+   * @param {import('../../src').default} [router] The router.
+   * @param {boolean|AllowedMethodsOptions} [allowedMethods] Install the allowed methods middleware.
    */
-  startApp() {
+  startApp(router, allowedMethods) {
+    if (router) this.app.use(router.routes())
+    if (allowedMethods) this.app.use(
+      router.allowedMethods(typeof allowedMethods == 'boolean' ? {} : allowedMethods)
+    )
     return this.startPlain(this.app.callback())
   }
 }
+
+/**
+ * @typedef {import('../..').AllowedMethodsOptions} AllowedMethodsOptions
+ */

@@ -351,8 +351,8 @@ function escapeString(str) {
 /**
  * Get the flags for a regexp from the options.
  */
-function flags(options) {
-  return options && options.sensitive ? '' : 'i'
+function flags(options = {}) {
+  return options.sensitive ? '' : 'i'
 }
 
 /**
@@ -425,7 +425,7 @@ export function tokensToRegexp(
 
   // Iterate over the tokens and create our regexp string.
   for (const token of tokens) {
-    if (typeof token === 'string') {
+    if (typeof token == 'string') {
       route += escapeString(encode(token))
     } else {
       const prefix = escapeString(encode(token.prefix))
@@ -435,8 +435,8 @@ export function tokensToRegexp(
         if (keys) keys.push(token)
 
         if (prefix || suffix) {
-          if (token.modifier === '+' || token.modifier === '*') {
-            const mod = token.modifier === '*' ? '?' : ''
+          if (token.modifier == '+' || token.modifier == '*') {
+            const mod = token.modifier == '*' ? '?' : ''
             route += `(?:${prefix}((?:${token.pattern})(?:${suffix}${prefix}(?:${token.pattern}))*)${suffix})${mod}`
           } else {
             route += `(?:${prefix}(${token.pattern})${suffix})${token.modifier}`

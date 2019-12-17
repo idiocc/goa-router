@@ -11,7 +11,7 @@ import HttpError from '@goa/http-errors'
 import { METHODS } from 'http'
 import Layer from './layer'
 
-const debug = Debug('koa-router')
+const debug = Debug('@goa/router')
 
 export default class Router {
   /**
@@ -43,7 +43,7 @@ export default class Router {
    * @param {_goa.AllowedMethodsOptions} options
    */
   allowedMethods(options = {}) {
-    const { throw: t, notImplemented, methodNotAllowed } = options
+    const { throw: t = false, notImplemented, methodNotAllowed } = options
 
     /** @type {!_goa.Middleware} */
     const mw = async (ctx, next) => {
@@ -157,9 +157,9 @@ export default class Router {
    * @private
    */
   register(path, methods, middleware, opts = {}) {
-    const { ignoreCaptures, prefix = this.opts.prefix,
-      strict = this.opts.strict, end, name,
-      sensitive = this.opts.sensitive } = opts
+    const { ignoreCaptures, prefix = this.opts.prefix || '',
+      strict = this.opts.strict || false, end = true, name,
+      sensitive = this.opts.sensitive || false } = opts
 
     // support array of paths
     if (Array.isArray(path)) {
@@ -176,7 +176,7 @@ export default class Router {
       name,
       sensitive,
       strict,
-      prefix: prefix || '',
+      prefix,
       ignoreCaptures,
     })
 
@@ -321,8 +321,8 @@ export default class Router {
 
     const hasPath = typeof path == 'string'
     if (!hasPath) {
-      path = undefined
       middleware.unshift(path)
+      path = undefined
     }
 
     middleware.forEach((m) => {

@@ -49,7 +49,9 @@ export default class Layer {
     })
 
     this.path = path
-    this.regexp = pathToRegExp(path, this.paramNames, this.opts)
+    this.regexp = pathToRegExp(
+      typeof path == 'string' ? path.replace(/\/$/, '') : path,
+      this.paramNames, this.opts)
 
     debug('defined route %s %s', this.methods, this.opts.prefix + this.path)
   }
@@ -189,7 +191,9 @@ export default class Layer {
     if (this.path) {
       this.path = prefix + this.path
       this.paramNames = []
-      this.regexp = pathToRegExp(this.path, this.paramNames, this.opts)
+      const path = this.path
+      this.regexp = pathToRegExp(typeof path == 'string' ? path.replace(/\/$/, '') : path,
+        this.paramNames, this.opts)
     }
 
     return this

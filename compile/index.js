@@ -6,7 +6,11 @@ const { _Router } = require('./router')
 class Router extends _Router {
   /**
    * Create a new router.
-   * @param {!_goa.RouterConfig=} [opts] The options for the router.
+   * @param {!_goa.RouterConfig} [opts] Config for the router.
+   * @param {!Array<string>} [opts.methods] The methods to serve.
+   * Default `HEAD`, `OPTIONS`, `GET`, `PUT`, `PATCH`, `POST`, `DELETE`.
+   * @param {string} [opts.prefix] Prefix router paths.
+   * @param {string} [opts.routerPath] Custom routing path.
    * @example
    * ```js
    * import Goa from '＠goa/koa'
@@ -45,7 +49,10 @@ class Router extends _Router {
    * Returns separate middleware for responding to `OPTIONS` requests with
    * an `Allow` header containing the allowed methods, as well as responding
    * with `405 Method Not Allowed` and `501 Not Implemented` as appropriate.
-   * @param {!_goa.AllowedMethodsOptions} options The options.
+   * @param {!_goa.AllowedMethodsOptions} options
+   * @param {boolean} options.throw Throw error instead of setting status and header.
+   * @param {!Function} options.notImplemented Throw the returned value in place of the default `NotImplemented` error.
+   * @param {!Function} options.methodNotAllowed Throw the returned value in place of the default `MethodNotAllowed` error.
    * @return {!_goa.Middleware}
    * @example
    * ```js
@@ -218,6 +225,36 @@ module.exports = Router
  * @typedef {Object} _goa.Layer `＠interface`
  */
 
+/* typal types/router.xml namespace */
 /**
  * @typedef {import('@typedefs/goa').Middleware} _goa.Middleware
+ * @typedef {_goa.Router} Router `＠interface` Router For Goa Apps.
+ * @typedef {Object} _goa.Router `＠interface` Router For Goa Apps.
+ * @prop {(opts?: !_goa.RouterConfig) => _goa.Router} constructor Create a new router.
+ * @prop {(options: !_goa.AllowedMethodsOptions) => !_goa.Middleware} allowedMethods Returns separate middleware for responding to `OPTIONS` requests with
+ * an `Allow` header containing the allowed methods, as well as responding
+ * with `405 Method Not Allowed` and `501 Not Implemented` as appropriate.
+ * @prop {(param: string, middleware: !_goa.Middleware) => !_goa.Router} param Run middleware for named route parameters. Useful for auto-loading or validation.
+ * @prop {(source: string, destination: string, code?: number) => !_goa.Router} redirect Redirect `source` to `destination` URL with optional 30x status `code`.
+ * Both `source` and `destination` can be route names.
+ * @prop {(name: string) => !_goa.Layer} route Lookup route with given `name`.
+ * @prop {(name: string, params: !Object, options?: { query: (string|!Object) }) => (string|!Error)} url Generate URL for route. Takes a route name and map of named `params`. If the route is not found, returns an error.
+ * @prop {(path: (string|!Array<string>|!_goa.Middleware), ...middleware: !_goa.Middleware[]) => !_goa.Router} use Use given middleware.
+ * Middleware run in the order they are defined by `.use()`. They are invoked
+ * sequentially, requests start at the first middleware and work their way
+ * "down" the middleware stack.
+ * @prop {(prefix: string) => !_goa.Router} prefix Set the path prefix for a Router instance that was already initialized.
+ * @prop {() => !_goa.Middleware} middleware Returns router middleware which dispatches a route matching the request.
+ * @prop {() => !_goa.Middleware} routes An alias for `middleware`.
+ * @typedef {_goa.AllowedMethodsOptions} AllowedMethodsOptions `＠record`
+ * @typedef {Object} _goa.AllowedMethodsOptions `＠record`
+ * @prop {boolean} throw Throw error instead of setting status and header.
+ * @prop {!Function} notImplemented Throw the returned value in place of the default `NotImplemented` error.
+ * @prop {!Function} methodNotAllowed Throw the returned value in place of the default `MethodNotAllowed` error.
+ * @typedef {_goa.RouterConfig} RouterConfig `＠record` Config for the router.
+ * @typedef {Object} _goa.RouterConfig `＠record` Config for the router.
+ * @prop {!Array<string>} [methods] The methods to serve.
+ * Default `HEAD`, `OPTIONS`, `GET`, `PUT`, `PATCH`, `POST`, `DELETE`.
+ * @prop {string} [prefix] Prefix router paths.
+ * @prop {string} [routerPath] Custom routing path.
  */
