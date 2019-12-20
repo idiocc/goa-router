@@ -1,1 +1,1 @@
-<footer />
+<idio-footer />
