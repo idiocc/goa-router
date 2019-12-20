@@ -23,6 +23,7 @@
     "src",
     "compile",
     "types",
+    "example/jsdoc",
     "typedefs.json"
   ],
   "externs": "types/externs.js",

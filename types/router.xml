@@ -2,20 +2,20 @@
   <import name="Middleware" from="@typedefs/goa" ns="_goa" />
 
   <interface name="Router" desc="Router For Goa Apps.">
-    <fn name="constructor" example="example/jsdoc/constructor.js"
+    <fn name="constructor" example="../example/jsdoc/constructor.js"
     example-override="../../src => @goa/router">
       <arg type="!_goa.RouterConfig" name="opts" opt>
         The options for the router.
       </arg>
       Create a new router.
     </fn>
-    <fn name="allowedMethods" return="!_goa.Middleware" example="example/jsdoc/allowed-methods.js" example-override="../../src => @goa/router" return="!_goa.Middleware">
+    <fn name="allowedMethods" return="!_goa.Middleware" example="../example/jsdoc/allowed-methods.js" example-override="../../src => @goa/router" return="!_goa.Middleware">
       <arg type="!_goa.AllowedMethodsOptions" name="options">The options.</arg>
       Returns separate middleware for responding to `OPTIONS` requests with
       an `Allow` header containing the allowed methods, as well as responding
       with `405 Method Not Allowed` and `501 Not Implemented` as appropriate.
     </fn>
-    <fn name="param" example="example/jsdoc/param.js" return="!_goa.Router">
+    <fn name="param" example="../example/jsdoc/param.js" return="!_goa.Router">
       <arg string name="param">
         The name of the param.
       </arg>
@@ -37,7 +37,7 @@
       </arg>
       Lookup route with given `name`. If the route is not found, returns `null`.
     </fn>
-    <fn name="url" example="example/jsdoc/url.js" return="string|!Error">
+    <fn name="url" example="../example/jsdoc/url.js" return="string|!Error">
       <arg string name="name">
         The route name.
       </arg>
@@ -46,7 +46,7 @@
       </arg>
       Generate URL for route. Takes a route name and map of named `params`. If the route is not found, returns an error. The last argument can be an object with the `query` property.
     </fn>
-    <fn static name="url" return="string" example="example/jsdoc/static-url.js">
+    <fn static name="url" return="string" example="../example/jsdoc/static-url.js">
       <arg string name="path">
         The URL pattern.
       </arg>
@@ -55,7 +55,7 @@
       </arg>
       Generate URL from url pattern and given `params`.
     </fn>
-    <fn name="use" return="!_goa.Router" example="example/jsdoc/use.js">
+    <fn name="use" return="!_goa.Router" example="../example/jsdoc/use.js">
       <arg type="string|!Array<string>|!_goa.Middleware" name="path">
         The path or an array of paths. Pass middleware without path to apply to `*`.
       </arg>
@@ -67,7 +67,7 @@
       sequentially, requests start at the first middleware and work their way
       "down" the middleware stack.
     </fn>
-    <fn name="prefix" return="!_goa.Router" example="example/jsdoc/prefix.js">
+    <fn name="prefix" return="!_goa.Router" example="../example/jsdoc/prefix.js">
       <arg string name="prefix">The prefix to set.</arg>
       Set the path prefix for a Router instance that was already initialized.
     </fn>
