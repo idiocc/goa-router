@@ -32,16 +32,6 @@ class Router extends _Router {
     super(opts)
   }
   /**
-   * Redirect `source` to `destination` URL with optional 30x status `code`.
-   * Both `source` and `destination` can be route names.
-   * @param {string} source URL or route name.
-   * @param {string} destination URL or route name.
-   * @param {number=} [code] The HTTP status code. Default `301`.
-   */
-  redirect(source, destination, code) {
-    return super.redirect(source, destination, code)
-  }
-  /**
    * Generate URL from url pattern and given `params`.
    * @param {string} path The URL pattern.
    * @param {...!Object} params The URL parameters.
@@ -101,6 +91,16 @@ class Router extends _Router {
    */
   param(param, middleware) {
     return super.param(param, middleware)
+  }
+  /**
+   * Redirect `source` to `destination` URL with optional 30x status `code`.
+   * Both `source` and `destination` can be route names.
+   * @param {string} source URL or route name.
+   * @param {string} destination URL or route name.
+   * @param {number=} [code] The HTTP status code. Default `301`.
+   */
+  redirect(source, destination, code) {
+    return super.redirect(source, destination, code)
   }
   /**
    * Lookup route with given `name`. If the route is not found, returns `null`.
@@ -205,21 +205,24 @@ class Router extends _Router {
 
 module.exports = Router
 
-/* typal types/index.xml ignore:_goa.LayerConfig,namespace */
+/* typal types/index.xml ignore:_goa.LayerConfig namespace */
 /**
- * @typedef {import('@typedefs/goa').Middleware} Middleware
- * @typedef {Object} Layer `＠interface` A single piece of middleware that can be matched for all possible routes.
+ * @typedef {import('@typedefs/goa').Middleware} _goa.Middleware
+ * @typedef {_goa.Layer} Layer `＠interface` A single piece of middleware that can be matched for all possible routes.
+ * @typedef {Object} _goa.Layer `＠interface` A single piece of middleware that can be matched for all possible routes.
  * @prop {!Array<{ name: string }>} paramNames Parameter names stored in this layer. Default `[]`.
  */
 
-/* typal types/router.xml ignore:_goa.Router,namespace */
+/* typal types/router.xml ignore:_goa.Router namespace */
 /**
- * @typedef {import('@typedefs/goa').Middleware} Middleware
- * @typedef {Object} AllowedMethodsOptions `＠record` The options for the `allowedMethods` middleware generation.
+ * @typedef {import('@typedefs/goa').Middleware} _goa.Middleware
+ * @typedef {_goa.AllowedMethodsOptions} AllowedMethodsOptions `＠record` The options for the `allowedMethods` middleware generation.
+ * @typedef {Object} _goa.AllowedMethodsOptions `＠record` The options for the `allowedMethods` middleware generation.
  * @prop {boolean} [throw] Throw error instead of setting status and header.
  * @prop {() => !Error} [notImplemented] Throw the returned value in place of the default `NotImplemented` error.
  * @prop {() => !Error} [methodNotAllowed] Throw the returned value in place of the default `MethodNotAllowed` error.
- * @typedef {Object} RouterConfig `＠record` Config for the router.
+ * @typedef {_goa.RouterConfig} RouterConfig `＠record` Config for the router.
+ * @typedef {Object} _goa.RouterConfig `＠record` Config for the router.
  * @prop {!Array<string>} [methods] The methods to serve.
  * Default `HEAD`, `OPTIONS`, `GET`, `PUT`, `PATCH`, `POST`, `DELETE`.
  * @prop {string} [prefix] Prefix router paths.

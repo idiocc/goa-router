@@ -33,6 +33,7 @@ _goa.LayerConfig.prototype.strict
 _goa.LayerConfig.prototype.ignoreCaptures
 /**
  * A single piece of middleware that can be matched for all possible routes.
+ * Constructor method.
  * @interface
  */
 _goa.Layer = function() {}
@@ -45,18 +46,11 @@ _goa.Layer.prototype.paramNames
 /* typal types/router.xml */
 /**
  * Router For Goa Apps.
+ * Create a new router.
+ * @param {!_goa.RouterConfig=} [opts] The options for the router.
  * @interface
  */
-_goa.Router = function() {}
-/**
- * Redirect `source` to `destination` URL with optional 30x status `code`.
- * Both `source` and `destination` can be route names.
- * @param {string} source URL or route name.
- * @param {string} destination URL or route name.
- * @param {number=} [code] The HTTP status code. Default `301`.
- * @return {!_goa.Router}
- */
-_goa.Router.prototype.redirect = function(source, destination, code) {}
+_goa.Router = function(opts) {}
 /**
  * Generate URL from url pattern and given `params`.
  * @param {string} path The URL pattern.
@@ -64,6 +58,11 @@ _goa.Router.prototype.redirect = function(source, destination, code) {}
  * @return {string}
  */
 _goa.Router.url = function(path, ...params) {}
+/**
+ * Stored options passed to the _Router_ constructor.
+ * @type {!_goa.RouterConfig}
+ */
+_goa.Router.prototype.opts
 /**
  * Returns separate middleware for responding to `OPTIONS` requests with
  * an `Allow` header containing the allowed methods, as well as responding
@@ -80,10 +79,14 @@ _goa.Router.prototype.allowedMethods = function(options) {}
  */
 _goa.Router.prototype.param = function(param, middleware) {}
 /**
- * Stored options passed to the _Router_ constructor.
- * @type {!_goa.RouterConfig}
+ * Redirect `source` to `destination` URL with optional 30x status `code`.
+ * Both `source` and `destination` can be route names.
+ * @param {string} source URL or route name.
+ * @param {string} destination URL or route name.
+ * @param {number=} [code] The HTTP status code. Default `301`.
+ * @return {!_goa.Router}
  */
-_goa.Router.prototype.opts
+_goa.Router.prototype.redirect = function(source, destination, code) {}
 /**
  * Lookup route with given `name`. If the route is not found, returns `null`.
  * @param {string} name The route name.

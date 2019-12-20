@@ -23,6 +23,8 @@ The example below creates a really simple router that responds to the `GET /` an
 
 %~%
 
+<include-typedefs>node_modules/@typedefs/goa/typedefs.json</include-typedefs>
+
 <typedef narrow slimFunctions name="Router">types/router.xml</typedef>
 
 <typedef details="RouterConfig" name="RouterConfig">types/router.xml</typedef>

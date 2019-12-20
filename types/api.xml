@@ -1,6 +1,0 @@
-<types namespace="_router">
-  <method name="router" async return="string">
-    <arg type="!_router.Config" name="config">The config.</arg>
-    The Router For Creating Middleware For Goa Apps.
-  </method>
-</types>

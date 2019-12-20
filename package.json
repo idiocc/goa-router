@@ -9,12 +9,11 @@
     "test": "yarn t test/spec test/mask",
     "spec": "yarn t test/spec",
     "mask": "yarn t test/mask",
-    "compile": "depack src/bin/router -o compile/bin/router.js -a -c -S --externs types/externs.js",
     "lib": "depack src/depack.js -o compile/router.js -a -c --source_map_include_content",
     "test-compile": "ALAMODE_ENV=test-compile yarn test",
     "lint": "eslint .",
     "doc": "doc -o README.md -n _goa -d",
-    "wiki": "doc documentary-wiki -W wiki -n _goa -d",
+    "wiki": "doc wiki -W wiki.git -n _goa -d -a",
     "d": "yarn-s template d1 externs",
     "d1": "typal compile/index.js -u -t types/index.xml",
     "template": "typal compile/template.js -T compile/index.js -t types",
@@ -23,13 +22,15 @@
   "files": [
     "src",
     "compile",
-    "types/externs.js"
+    "types/externs.js",
+    "typedefs.json"
   ],
   "externs": "types/externs.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/idiocc/goa-router.git"
   },
+  "typedefs": "typedefs.json",
   "keywords": [
     "router",
     "goa",
@@ -41,23 +42,23 @@
   "bugs": {
     "url": "https://github.com/idiocc/goa-router/issues"
   },
-  "homepage": "https://github.com/idiocc/goa-router#readme",
+  "homepage": "https://www.idio.cc",
   "devDependencies": {
     "@contexts/http": "^1.6.1",
-    "@externs/goa": "^0.1.1",
+    "@externs/goa": "^0.1.3",
     "@goa/compose": "^1.0.0",
     "@goa/http-errors": "^1.0.0",
-    "@goa/koa": "^1.1.5",
+    "@goa/koa": "^2.0.2",
     "@goa/statuses": "^1.0.1",
     "@idio/debug": "^1.2.3",
-    "@typedefs/goa": "^0.0.6",
+    "@typedefs/goa": "^0.1.3",
     "alamode": "^3.3.0",
     "depack": "^1.0.1",
-    "documentary": "^1.34.6",
+    "documentary": "^1.35.3",
     "erte": "^1.2.0",
     "eslint-config-artdeco": "1.0.1",
     "rqt": "^4.0.0",
-    "typal": "^1.24.4",
+    "typal": "^1.24.17",
     "yarn-s": "1.2.1",
     "zoroaster": "^4.1.2"
   },

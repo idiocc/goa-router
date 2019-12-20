@@ -1,0 +1,22 @@
+{
+  "_goa.Router": {
+    "link": "https://github.com/idiocc/goa-router/wiki/Home#type-router",
+    "description": "Router For Goa Apps."
+  },
+  "_goa.AllowedMethodsOptions": {
+    "link": "https://github.com/idiocc/goa-router/wiki/Home#type-allowedmethodsoptions",
+    "description": "The options for the `allowedMethods` middleware generation."
+  },
+  "_goa.RouterConfig": {
+    "link": "https://github.com/idiocc/goa-router/wiki/Home#type-routerconfig",
+    "description": "Config for the router."
+  },
+  "_goa.LayerConfig": {
+    "link": "https://github.com/idiocc/goa-router/wiki/Home#type-layerconfig",
+    "description": "Options for the layer."
+  },
+  "_goa.Layer": {
+    "link": "https://github.com/idiocc/goa-router/wiki/Home#type-layer",
+    "description": "A single piece of middleware that can be matched for all possible routes."
+  }
+}

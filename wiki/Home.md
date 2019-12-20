@@ -2,6 +2,6 @@
   node_modules/@typedefs/goa/typedefs.json
 </include-typedefs>
 
-<typedef narrow>types/router.xml</typedef>
+<typedef narrow flatten slimFunctions>types/router.xml</typedef>
 
-<typedef narrow>types/index.xml</typedef>
+<typedef narrow flatten slimFunctions>types/index.xml</typedef>

@@ -88,6 +88,7 @@ HEAD, GET
   <img src="/.documentary/section-breaks/1.svg?sanitize=true">
 </a></p>
 
+
 __<a name="type-router">`Router`</a>__: Router For Goa Apps.
 <table>
  <thead><tr>
@@ -121,17 +122,6 @@ app
   </td>
  </tr>
  <tr>
-  <td rowSpan="3" align="center"><ins>redirect</ins></td>
-  <td><em>(source: string, destination: string, code?: number) => <a href="#type-router" title="Router For Goa Apps.">!Router</a></em></td>
- </tr>
- <tr></tr>
- <tr>
-  <td>
-   Redirect <code>source</code> to <code>destination</code> URL with optional 30x status <code>code</code>.
-   Both <code>source</code> and <code>destination</code> can be route names.
-  </td>
- </tr>
- <tr>
   <td rowSpan="3" align="center"><kbd>static</kbd> <ins>url</ins></td>
   <td><em>(path: string, ...params: !Object[]) => string</em></td>
  </tr>
@@ -147,8 +137,18 @@ const url = Router.url('/users/:id', { id: 1 })
   </td>
  </tr>
  <tr>
+  <td rowSpan="3" align="center"><ins>opts</ins></td>
+  <td><em><a href="#type-routerconfig" title="Config for the router.">!RouterConfig</a></em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Stored options passed to the <em>Router</em> constructor.
+  </td>
+ </tr>
+ <tr>
   <td rowSpan="3" align="center"><ins>allowedMethods</ins></td>
-  <td><em>(options: <a href="#type-allowedmethodsoptions" title="The options for the `allowedMethods` middleware generation.">!AllowedMethodsOptions</a>) => <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a></em></td>
+  <td><em>(options: <a href="#type-allowedmethodsoptions" title="The options for the `allowedMethods` middleware generation.">!AllowedMethodsOptions</a>) => <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-contextnext-function-promisevoid" title="The function to handle requests which can be installed with the `.use` method.">!Middleware</a></em></td>
  </tr>
  <tr></tr>
  <tr>
@@ -171,7 +171,7 @@ app.use(router.allowedMethods())
  </tr>
  <tr>
   <td rowSpan="3" align="center"><ins>param</ins></td>
-  <td><em>(param: string, middleware: <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a>) => <a href="#type-router" title="Router For Goa Apps.">!Router</a></em></td>
+  <td><em>(param: string, middleware: <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-contextnext-function-promisevoid" title="The function to handle requests which can be installed with the `.use` method.">!Middleware</a>) => <a href="#type-router" title="Router For Goa Apps.">!Router</a></em></td>
  </tr>
  <tr></tr>
  <tr>
@@ -195,13 +195,14 @@ router
   </td>
  </tr>
  <tr>
-  <td rowSpan="3" align="center"><ins>opts</ins></td>
-  <td><em><a href="#type-routerconfig" title="Config for the router.">!RouterConfig</a></em></td>
+  <td rowSpan="3" align="center"><ins>redirect</ins></td>
+  <td><em>(source: string, destination: string, code?: number) => <a href="#type-router" title="Router For Goa Apps.">!Router</a></em></td>
  </tr>
  <tr></tr>
  <tr>
   <td>
-   Stored options passed to the <em>Router</em> constructor.
+   Redirect <code>source</code> to <code>destination</code> URL with optional 30x status <code>code</code>.
+   Both <code>source</code> and <code>destination</code> can be route names.
   </td>
  </tr>
  <tr>
@@ -259,7 +260,7 @@ router.url('user', { id: 3 }, { query: 'limit=1' })
  </tr>
  <tr>
   <td rowSpan="3" align="center"><ins>use</ins></td>
-  <td><em>(path: (string | !Array&lt;string&gt; | <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a>), ...middleware: <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a>[]) => <a href="#type-router" title="Router For Goa Apps.">!Router</a></em></td>
+  <td><em>(path: (string | !Array&lt;string&gt; | <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-contextnext-function-promisevoid" title="The function to handle requests which can be installed with the `.use` method.">!Middleware</a>), ...middleware: <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-contextnext-function-promisevoid" title="The function to handle requests which can be installed with the `.use` method.">!Middleware</a>[]) => <a href="#type-router" title="Router For Goa Apps.">!Router</a></em></td>
  </tr>
  <tr></tr>
  <tr>
@@ -298,7 +299,7 @@ router.prefix('/things/:thing_id')
  </tr>
  <tr>
   <td rowSpan="3" align="center"><ins>middleware</ins><br><ins>routes</ins><sup><em>alias</em></sup></td>
-  <td><em>() => <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid">!Middleware</a></em></td>
+  <td><em>() => <a href="https://github.com/idiocc/goa/wiki/Application#middlewarectx-contextnext-function-promisevoid" title="The function to handle requests which can be installed with the `.use` method.">!Middleware</a></em></td>
  </tr>
  <tr></tr>
  <tr>

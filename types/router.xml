@@ -1,5 +1,5 @@
 <types ns="_goa">
-  <import name="Middleware" from="@typedefs/goa" ns="_goa" link="https://github.com/idiocc/goa/wiki/Application#middlewarectx-_goacontextnext-function-promisevoid" />
+  <import name="Middleware" from="@typedefs/goa" ns="_goa" />
 
   <interface name="Router" desc="Router For Goa Apps.">
     <fn name="constructor" example="example/jsdoc/constructor.js"
