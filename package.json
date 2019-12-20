@@ -22,7 +22,7 @@
   "files": [
     "src",
     "compile",
-    "types/externs.js",
+    "types",
     "typedefs.json"
   ],
   "externs": "types/externs.js",

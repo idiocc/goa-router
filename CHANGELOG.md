@@ -1,5 +1,9 @@
 ## 20 December 2019
 
+### [1.1.1](https://github.com/idiocc/goa-router/compare/v1.1.0...v1.1.1)
+
+- [package] Publish `types/*.xml` files.
+
 ### [1.1.0](https://github.com/idiocc/goa-router/compare/v1.0.0...v1.1.0)
 
 - [doc] Add wiki page.
