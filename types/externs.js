@@ -167,21 +167,3 @@ _goa.RouterConfig.prototype.prefix
  * @type {string|undefined}
  */
 _goa.RouterConfig.prototype.routerPath
-
-// assign custom properties manually
-/**
- * @type {!_goa.Router}
- */
-_goa.Middleware.prototype.router
-/**
- * @type {!Object}
- */
-_goa.Context.prototype.params
-/**
- * @type {string}
- */
-_goa.Context.prototype._matchedRouteName
-/**
- * @type {string}
- */
-_goa.Context.prototype._matchedRoute

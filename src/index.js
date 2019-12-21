@@ -335,7 +335,7 @@ export default class Router {
    */
   middleware() {
     /**
-     * @type {!_goa.Middleware}
+     * @type {!_idio.Middleware}
      */
     const dispatch = (ctx, next) => {
       debug('%s %s', ctx.method, ctx.path)
@@ -363,7 +363,7 @@ export default class Router {
 
       layerChain = matchedLayers.reduce((acc, layer) => {
         /**
-         * @type {!_goa.Middleware}
+         * @type {!_idio.Middleware}
          */
         const link = (c, n) => {
           c.captures = layer.captures(path)
@@ -426,5 +426,9 @@ export const methods = METHODS.map((m) => m.toLowerCase())
  */
 /**
  * @suppress {nonStandardJsDocs}
- * @typedef {import('@typedefs/goa').Middleware} _goa.Middleware
+ * @typedef {import('../types').Router} _goa.Router
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('@typedefs/idio').Middleware} _idio.Middleware
  */
