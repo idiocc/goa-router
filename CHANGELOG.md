@@ -1,3 +1,9 @@
+## 21 December 2019
+
+### [1.2.0](https://github.com/idiocc/goa-router/compare/v1.1.2...v1.2.0)
+
+- [feature] _Idio_ externs.
+
 ## 20 December 2019
 
 ### [1.1.2](https://github.com/idiocc/goa-router/compare/v1.1.1...v1.1.2)
